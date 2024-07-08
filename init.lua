@@ -57,13 +57,13 @@ end
 function _G.move_blackboard_window(direction)
   if blackboard_win and api.nvim_win_is_valid(blackboard_win) then
     if direction == "up" then
-      blackboard_win_opts.row = blackboard_win_opts.row - 2
+      blackboard_win_opts.row = blackboard_win_opts.row - 1
     elseif direction == "down" then
-      blackboard_win_opts.row = blackboard_win_opts.row + 2
+      blackboard_win_opts.row = blackboard_win_opts.row + 1
     elseif direction == "left" then
-      blackboard_win_opts.col = blackboard_win_opts.col - 2
+      blackboard_win_opts.col = blackboard_win_opts.col - 1
     elseif direction == "right" then
-      blackboard_win_opts.col = blackboard_win_opts.col + 2
+      blackboard_win_opts.col = blackboard_win_opts.col + 1
     end
     api.nvim_win_set_config(blackboard_win, blackboard_win_opts)
   end
@@ -77,16 +77,28 @@ function _G.clear_blackboard()
 end
 
 function _G.set_blackboard_size(height, width)
-  blackboard_win_opts.height = tonumber(height)
-  blackboard_win_opts.width = tonumber(width)
+  height = tonumber(height)
+  width = tonumber(width)
+  if height and width then
+    blackboard_win_opts.height = height
+    blackboard_win_opts.width = width
+  else
+    blackboard_win_opts.height = 20
+    blackboard_win_opts.width = 80
+  end
   if blackboard_win and api.nvim_win_is_valid(blackboard_win) then
     api.nvim_win_set_config(blackboard_win, blackboard_win_opts)
   end
 end
 
 function _G.set_blackboard_colors(fg, bg)
-  blackboard_colors.fg = fg
-  blackboard_colors.bg = bg
+  if fg and bg then
+    blackboard_colors.fg = fg
+    blackboard_colors.bg = bg
+  else
+    blackboard_colors.fg = 'white'
+    blackboard_colors.bg = '#00008B'
+  end
   if blackboard_win and api.nvim_win_is_valid(blackboard_win) then
     vim.cmd('highlight BlackboardWindow guifg=' .. blackboard_colors.fg .. ' guibg=' .. blackboard_colors.bg)
     api.nvim_win_set_option(blackboard_win, 'winhl', 'Normal:BlackboardWindow,NormalNC:BlackboardWindow')
@@ -113,3 +125,4 @@ vim.api.nvim_set_keymap('n', '<C-l>', ':lua move_blackboard_window("right")<CR>'
 
 -- リーダーキーcでブラックボードをクリアするマッピングを作成
 vim.api.nvim_set_keymap('n', '<leader>c', ':lua clear_blackboard()<CR>', { noremap = true, silent = true })
+
