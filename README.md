@@ -1,45 +1,92 @@
-# Blackboard Plugin for Neovim
-**Status:** In Development
+# VSCode Compatible Neovim Configuration
 
-This plugin is currently in the development stage. The file structure, features, and functionality are not yet fully implemented or optimized. Please be aware that the plugin may undergo significant changes as development progresses.
+A modern Neovim configuration that works seamlessly in both standalone Neovim and VSCode Neovim extension.
 
 ## Features
-- Create and manage a blackboard window within Neovim.
-- Adjust the size of the blackboard window using the `:BlackboardSize` command.
-- Change the color scheme of the blackboard window using the `:BlackboardColor` command.
+
+- **Plugin Management**: Uses [lazy.nvim](https://github.com/folke/lazy.nvim) for efficient plugin management
+- **VSCode Compatibility**: Automatically detects and adapts when running inside VSCode
+- **Modern UI**: Beautiful interface with Tokyo Night theme, status line, and file explorer (in standalone mode)
+- **LSP Support**: Integrated Language Server Protocol for code intelligence (in standalone mode)
+- **Autocompletion**: Smart code completion with nvim-cmp (in standalone mode)
+- **Syntax Highlighting**: Enhanced syntax highlighting with Treesitter
+- **Terminal Integration**: Floating terminal and REPL support (in standalone mode)
+- **File Navigation**: Fuzzy finding with Telescope (limited functionality in VSCode)
+- **Git Integration**: Git commands and status display (in standalone mode)
+- **Session Management**: Automatic session saving and restoration (in standalone mode)
+
+## Included Plugins
+
+### Core Plugins (Both Modes)
+
+- **Comment.nvim**: Easy code commenting
+- **nvim-autopairs**: Automatic bracket pairing
+- **todo-comments.nvim**: Highlight and search TODO comments
+
+### Standalone Neovim Only
+
+- **tokyonight.nvim**: Modern colorscheme
+- **lualine.nvim**: Enhanced status line
+- **nvim-tree.lua**: File explorer
+- **nvim-lspconfig**: LSP configuration
+- **mason.nvim**: LSP server management
+- **nvim-cmp**: Completion engine
+- **none-ls.nvim**: Formatting and linting
+- **toggleterm.nvim**: Terminal management
+- **persistence.nvim**: Session management
+- **telescope.nvim**: Fuzzy finder
+- **bufferline.nvim**: Buffer management
+- **nvim-notify**: Notification system
 
 ## Installation
-To install the plugin, place the `init.lua` file in your Neovim configuration directory (`~/.config/nvim/`).
 
-## Usage
-### Open the Blackboard
-Use the leader key `m` to open or close the blackboard window:
-```vim
-<leader>m
-```
-Adjust the Blackboard Size
-Set the height and width of the blackboard window:
+### Prerequisites
 
-vim
-:BlackboardSize <height> <width>
-Change the Blackboard Color Scheme
-Set the foreground and background colors of the blackboard window:
+- Neovim 0.8.0 or later
+- Git
+- (Optional) Node.js for LSP features
+- (Optional) Ripgrep for Telescope search
 
-vim
-:BlackboardColor <foreground> <background>
-Clear the Blackboard
-Use the leader key c to clear the contents of the blackboard window:
+### Setup
 
-vim
-<leader>c
-Contributing
-We welcome contributions to improve this plugin. If you encounter any bugs, have feature requests, or would like to contribute, please feel free to submit a pull request.
+1. Clone this repository to your Neovim configuration directory:
 
-How to Contribute
-Fork the repository.
-Create a new branch (git checkout -b feature-branch).
-Make your changes.
-Commit your changes (git commit -am 'Add new feature').
-Push to the branch (git push origin feature-branch).
-Open a pull request.
-Thank you for your interest in improving the Blackboard plugin for Neovim!
+   ```bash
+   git clone https://github.com/hnkNkm/neovim-config.git ~/.config/nvim
+   ```
+
+2. Start Neovim:
+
+   ```bash
+   nvim
+   ```
+
+3. The configuration will automatically install lazy.nvim and all plugins on first launch.
+
+### VSCode Setup
+
+1. Install the [VSCode Neovim extension](https://marketplace.visualstudio.com/items?itemName=asvetliakov.vscode-neovim)
+2. Clone this repository to your Neovim configuration directory
+3. Configure the extension to use your Neovim executable
+
+## Key Mappings
+
+- Leader key: `<Space>`
+- Exit insert mode: `jk`
+- Toggle file explorer: `<leader>e` (standalone only)
+- Find files: `<leader>ff` (standalone only)
+- Find text: `<leader>fg` (standalone only)
+- Open terminal: `<leader>t` (standalone only)
+- Comment line: `gcc`
+- Comment selection: `gc` (in visual mode)
+- Help: `<leader>h`
+
+## Customization
+
+- Edit files in `lua/config/` to modify basic settings
+- Edit files in `lua/plugins/` to modify plugin configurations
+- Add new plugins by creating new files in `lua/plugins/`
+
+## License
+
+MIT
