@@ -26,25 +26,26 @@ return {
           formatting.shfmt,
 
           -- Diagnostics
-          diagnostics.eslint_d,
-          diagnostics.flake8,
-          diagnostics.shellcheck,
-          diagnostics.luacheck.with({
-            extra_args = { "--globals", "vim", "--no-max-line-length" },
-          }),
+          -- diagnostics.eslint_d,
+          -- diagnostics.flake8,
+          -- diagnostics.shellcheck,
+          -- diagnostics.luacheck.with({
+          --   extra_args = { "--globals", "vim", "--no-max-line-length" },
+          -- }),
 
           -- Code Actions
-          code_actions.eslint_d,
-          code_actions.shellcheck,
+          -- code_actions.eslint_d,
+          -- code_actions.shellcheck,
           code_actions.gitsigns,
         },
         -- Format on save
         on_attach = function(client, bufnr)
           if client.supports_method("textDocument/formatting") then
             -- Create autocommand to format on save
+            local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
             vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
             vim.api.nvim_create_autocmd("BufWritePre", {
-              group = vim.api.nvim_create_augroup("LspFormatting", {}),
+              group = augroup,
               buffer = bufnr,
               callback = function()
                 vim.lsp.buf.format({

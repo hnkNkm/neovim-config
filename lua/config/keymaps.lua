@@ -7,6 +7,9 @@ local in_vscode = vim.g.vscode
 -- Use jk to exit insert mode
 map("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 
+-- Save file with leader w
+map("n", "<leader>w", ":w<CR>", { desc = "Save file" })
+
 -- Clear search highlights
 map("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
