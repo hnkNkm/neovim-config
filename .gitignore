@@ -51,3 +51,5 @@ lazy/
 # Generated files
 tags
 .DS_Store
+
+~/

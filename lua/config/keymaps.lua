@@ -10,6 +10,19 @@ map("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 -- Save file with leader w
 map("n", "<leader>w", ":w<CR>", { desc = "Save file" })
 
+-- Quit file with leader q
+map("n", "<leader>q", function()
+  if #vim.api.nvim_list_wins() > 1 then
+    vim.cmd("q")
+  else
+    vim.cmd("qa")
+  end
+end, { desc = "Smart quit: close window or quit all" })
+
+-- Close current buffer
+map("n", "<leader>x", ":bd<CR>", { desc = "Close current buffer" })
+
+
 -- Clear search highlights
 map("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
