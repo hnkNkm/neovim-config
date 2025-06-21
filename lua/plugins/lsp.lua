@@ -5,19 +5,22 @@ return {
     enabled = not vim.g.vscode,
     dependencies = {
       -- Automatically install LSPs, formatters, linters
-      { "williamboman/mason.nvim", config = true }, -- Ensure Mason is configured before lspconfig
+      "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
 
       -- Useful status updates for LSP
       { "j-hui/fidget.nvim", opts = {} },
     },
     config = function()
+      -- First ensure mason is setup
+      require("mason").setup()
+      
       -- Setup mason-lspconfig
       require("mason-lspconfig").setup({
         -- List of servers to automatically install
         ensure_installed = {
           "lua_ls", -- Example: Lua language server
-          "tsserver", -- Example: TypeScript/JavaScript
+          -- "tsserver", -- Example: TypeScript/JavaScript (commented out due to name issue)
           "pyright", -- Example: Python
           -- Add other servers you need here
         },
@@ -31,9 +34,13 @@ return {
       require("mason-lspconfig").setup_handlers({
         -- Default handler: Setup server with capabilities
         function(server_name)
-          require("lspconfig")[server_name].setup({
-            capabilities = capabilities,
-          })
+          -- Skip if server configuration doesn't exist
+          local ok, lspconfig = pcall(require, "lspconfig")
+          if ok and lspconfig[server_name] then
+            lspconfig[server_name].setup({
+              capabilities = capabilities,
+            })
+          end
         end,
         -- Custom handler for lua_ls
         ["lua_ls"] = function()
