@@ -15,19 +15,14 @@ return {
       -- First ensure mason is setup
       require("mason").setup()
       
-      -- Setup mason-lspconfig
+      -- Setup mason-lspconfig with minimal configuration
       require("mason-lspconfig").setup({
-        -- List of servers to automatically install
+        -- Only specify servers that are known to work
         ensure_installed = {
           "lua_ls", -- Lua language server
-          "typescript-language-server", -- TypeScript/JavaScript language server
-          "pyright", -- Python language server
-          "html-lsp", -- HTML language server
-          "css-lsp", -- CSS language server
-          "json-lsp", -- JSON language server
-          -- Add other servers you need here
+          -- Let users manually install other servers via :Mason
         },
-        automatic_installation = false, -- Disable automatic installation to avoid the error
+        automatic_installation = false, -- Disable automatic installation
       })
 
       -- Get the LSP capabilities provided by nvim-cmp
@@ -55,36 +50,6 @@ return {
                 diagnostics = { globals = { "vim" } },
                 workspace = { library = vim.api.nvim_get_runtime_file("", true) },
                 telemetry = { enable = false },
-              },
-            },
-          })
-        end,
-        -- Custom handler for TypeScript
-        ["typescript-language-server"] = function()
-          require("lspconfig").tsserver.setup({
-            capabilities = capabilities,
-            settings = {
-              typescript = {
-                inlayHints = {
-                  includeInlayParameterNameHints = "all",
-                  includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                  includeInlayFunctionParameterTypeHints = true,
-                  includeInlayVariableTypeHints = true,
-                  includeInlayPropertyDeclarationTypeHints = true,
-                  includeInlayFunctionLikeReturnTypeHints = true,
-                  includeInlayEnumMemberValueHints = true,
-                },
-              },
-              javascript = {
-                inlayHints = {
-                  includeInlayParameterNameHints = "all",
-                  includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                  includeInlayFunctionParameterTypeHints = true,
-                  includeInlayVariableTypeHints = true,
-                  includeInlayPropertyDeclarationTypeHints = true,
-                  includeInlayFunctionLikeReturnTypeHints = true,
-                  includeInlayEnumMemberValueHints = true,
-                },
               },
             },
           })
