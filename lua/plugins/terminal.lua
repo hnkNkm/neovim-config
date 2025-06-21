@@ -6,7 +6,13 @@ return {
     version = "*",
     config = function()
       require("toggleterm").setup({
-        size = 20,
+        size = function(term)
+          if term.direction == "horizontal" then
+            return 15  -- 水平分割時の高さ（行数）
+          elseif term.direction == "vertical" then
+            return vim.o.columns * 0.4  -- 垂直分割時の幅（40%）
+          end
+        end,
         open_mapping = [[<c-\>]], -- Ctrl+\ to toggle terminal
         hide_numbers = true,
         shade_filetypes = {},
@@ -70,8 +76,11 @@ return {
       map("n", "<leader>tn", "<cmd>lua toggle_node()<CR>", { desc = "Toggle Node REPL" })
       map("n", "<leader>tp", "<cmd>lua toggle_python()<CR>", { desc = "Toggle Python REPL" })
       map("n", "<leader>tf", "<cmd>ToggleTerm direction=float<CR>", { desc = "Toggle floating terminal" })
-      map("n", "<leader>th", "<cmd>ToggleTerm direction=horizontal<CR>", { desc = "Toggle horizontal terminal" })
-      map("n", "<leader>tv", "<cmd>ToggleTerm direction=vertical<CR>", { desc = "Toggle vertical terminal" })
+      
+      -- ToggleTerm with specific positions
+      map("n", "<leader>Tj", "<cmd>ToggleTerm direction=horizontal<CR>", { desc = "Toggle terminal below" })
+      map("n", "<leader>Tl", "<cmd>ToggleTerm direction=vertical<CR>", { desc = "Toggle terminal right" })
+      map("n", "<leader>Tt", "<cmd>ToggleTerm direction=tab<CR>", { desc = "Toggle terminal in new tab" })
     end,
   },
 }

@@ -44,11 +44,33 @@ if not in_vscode then
   map("n", "<C-j>", "<C-w>j", { desc = "Navigate to the bottom window" })
   map("n", "<C-k>", "<C-w>k", { desc = "Navigate to the top window" })
   map("n", "<C-l>", "<C-w>l", { desc = "Navigate to the right window" })
+  
+  -- Window resizing (leader + r prefix)
+  map("n", "<leader>rh", ":vertical resize -5<CR>", { desc = "Decrease window width" })
+  map("n", "<leader>rl", ":vertical resize +5<CR>", { desc = "Increase window width" })
+  map("n", "<leader>rk", ":resize +5<CR>", { desc = "Increase window height" })
+  map("n", "<leader>rj", ":resize -5<CR>", { desc = "Decrease window height" })
+  
+  -- Alternative: Use +/- for quick resizing
+  map("n", "<leader>r+", ":vertical resize +10<CR>", { desc = "Increase width by 10" })
+  map("n", "<leader>r-", ":vertical resize -10<CR>", { desc = "Decrease width by 10" })
+  map("n", "<leader>r=", "<C-w>=", { desc = "Make all windows equal size" })
+  
+  -- Option to maximize current window
+  map("n", "<leader>rm", "<C-w>|<C-w>_", { desc = "Maximize current window" })
+  map("n", "<leader>rr", "<C-w>=", { desc = "Restore equal window sizes" })
 
-  -- Terminal
+  -- Terminal (open relative to current window)
   map("n", "<leader>tt", ":terminal<CR>", { desc = "Open terminal in new buffer" })
-  map("n", "<leader>tv", ":vsplit | terminal<CR>", { desc = "Open terminal in vertical split" })
-  map("n", "<leader>th", ":split | terminal<CR>", { desc = "Open terminal in horizontal split" })
+  map("n", "<leader>tl", ":rightbelow vsplit | terminal<CR>", { desc = "Open terminal to the right" })
+  map("n", "<leader>th", ":leftabove vsplit | terminal<CR>", { desc = "Open terminal to the left" })
+  map("n", "<leader>tj", ":rightbelow split | terminal<CR>", { desc = "Open terminal below" })
+  map("n", "<leader>tk", ":leftabove split | terminal<CR>", { desc = "Open terminal above" })
+  
+  -- Quick terminal toggles for common positions
+  map("n", "<leader>tv", ":rightbelow vsplit | terminal<CR>", { desc = "Terminal right (vertical)" })
+  map("n", "<leader>ts", ":rightbelow split | terminal<CR>", { desc = "Terminal below (horizontal)" })
+  
   map("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" }) -- Use Esc to exit terminal mode
 end
 

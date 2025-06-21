@@ -21,6 +21,7 @@ return {
           "pyright", -- Example: Python
           -- Add other servers you need here
         },
+        automatic_installation = false, -- Disable automatic installation to avoid the error
       })
 
       -- Get the LSP capabilities provided by nvim-cmp
