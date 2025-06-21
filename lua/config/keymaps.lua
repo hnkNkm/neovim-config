@@ -72,6 +72,11 @@ if not in_vscode then
   map("n", "<leader>ts", ":rightbelow split | terminal<CR>", { desc = "Terminal below (horizontal)" })
   
   map("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" }) -- Use Esc to exit terminal mode
+
+  -- Git integration
+  map("n", "<leader>gg", "<cmd>lua toggle_lazygit()<CR>", { desc = "Open lazygit" })
+  -- Alternative: open lazygit in a new tab
+  map("n", "<leader>gG", ":tabnew | terminal lazygit<CR>", { desc = "Open lazygit in new tab" })
 end
 
 -- Help (available in both VSCode and regular Neovim)

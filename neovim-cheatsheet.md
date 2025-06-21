@@ -133,9 +133,12 @@
 - `<leader>fg` - プロジェクト内テキスト検索（ライブgrep）
 - `<leader>fw` - カーソル下の単語を検索
 
-### Git（Telescope）
+### Git（Telescope & Lazygit）
 - `<leader>gc` - Gitコミット一覧
 - `<leader>gs` - Gitステータス
+- `<leader>gg` - Lazygitを開く（フローティング）
+- `<leader>gG` - Lazygitを新しいタブで開く
+- `<leader>tg` - Lazygitの切り替え（ToggleTerm）
 
 ### LSP機能
 LSPがアタッチされている時：
