@@ -20,11 +20,11 @@ return {
         -- List of servers to automatically install
         ensure_installed = {
           "lua_ls", -- Lua language server
-          "ts_ls", -- TypeScript/JavaScript language server (formerly tsserver)
+          "typescript-language-server", -- TypeScript/JavaScript language server
           "pyright", -- Python language server
-          "html", -- HTML language server
-          "cssls", -- CSS language server
-          "jsonls", -- JSON language server
+          "html-lsp", -- HTML language server
+          "css-lsp", -- CSS language server
+          "json-lsp", -- JSON language server
           -- Add other servers you need here
         },
         automatic_installation = false, -- Disable automatic installation to avoid the error
@@ -60,11 +60,8 @@ return {
           })
         end,
         -- Custom handler for TypeScript
-        ["ts_ls"] = function()
-          local lspconfig = require("lspconfig")
-          -- Try ts_ls first, fallback to tsserver if it doesn't exist
-          local server_name = lspconfig.ts_ls and "ts_ls" or "tsserver"
-          lspconfig[server_name].setup({
+        ["typescript-language-server"] = function()
+          require("lspconfig").tsserver.setup({
             capabilities = capabilities,
             settings = {
               typescript = {
@@ -90,12 +87,6 @@ return {
                 },
               },
             },
-          })
-        end,
-        -- Fallback handler for tsserver (if ts_ls doesn't work)
-        ["tsserver"] = function()
-          require("lspconfig").tsserver.setup({
-            capabilities = capabilities,
           })
         end,
          -- Add custom handlers for other servers if needed
