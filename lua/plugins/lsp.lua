@@ -6,7 +6,7 @@ return {
     dependencies = {
       -- Automatically install LSPs, formatters, linters
       "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
+      -- "williamboman/mason-lspconfig.nvim", -- Temporarily disabled due to errors
 
       -- Useful status updates for LSP
       { "j-hui/fidget.nvim", opts = {} },
@@ -15,21 +15,38 @@ return {
       -- First ensure mason is setup
       require("mason").setup()
       
-      -- Setup mason-lspconfig with minimal configuration
-      require("mason-lspconfig").setup({
-        -- Only specify servers that are known to work
-        ensure_installed = {
-          "lua_ls", -- Lua language server
-          -- Let users manually install other servers via :Mason
-        },
-        automatic_installation = false, -- Disable automatic installation
-      })
-
       -- Get the LSP capabilities provided by nvim-cmp
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-      -- Setup LSP servers
-      require("mason-lspconfig").setup_handlers({
+      
+      -- Manually setup LSP servers without mason-lspconfig
+      local lspconfig = require("lspconfig")
+      
+      -- Setup lua_ls
+      if lspconfig.lua_ls then
+        lspconfig.lua_ls.setup({
+          capabilities = capabilities,
+          settings = {
+            Lua = {
+              runtime = { version = "LuaJIT" },
+              diagnostics = { globals = { "vim" } },
+              workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+              telemetry = { enable = false },
+            },
+          },
+        })
+      end
+      
+      -- Setup other common LSP servers if they are installed
+      local servers = { "pyright", "ts_ls", "html", "cssls", "jsonls" }
+      for _, server in ipairs(servers) do
+        if lspconfig[server] then
+          lspconfig[server].setup({
+            capabilities = capabilities,
+          })
+        end
+      end
+      
+      --[[ Disabled mason-lspconfig handlers due to errors
         -- Default handler: Setup server with capabilities
         function(server_name)
           -- Skip if server configuration doesn't exist
@@ -56,6 +73,7 @@ return {
         end,
          -- Add custom handlers for other servers if needed
        })
+      --]]
 
        -- LSP Keymaps (add these to your keymaps file or keep them here)
       local map = vim.keymap.set
