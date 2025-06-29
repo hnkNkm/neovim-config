@@ -39,6 +39,13 @@ if not in_vscode then
   map("n", "<leader>tn", ":tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
   map("n", "<leader>tp", ":tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 
+  -- Buffer management
+  map("n", "<leader>bb", ":bp<CR>", { desc = "Go to previous buffer" })
+  map("n", "<leader>bn", ":bn<CR>", { desc = "Go to next buffer" })
+  map("n", "<leader>bl", ":ls<CR>", { desc = "List buffers" })
+  map("n", "<Tab>", ":bn<CR>", { desc = "Next buffer" })
+  map("n", "<S-Tab>", ":bp<CR>", { desc = "Previous buffer" })
+
   -- Window navigation
   map("n", "<C-h>", "<C-w>h", { desc = "Navigate to the left window" })
   map("n", "<C-j>", "<C-w>j", { desc = "Navigate to the bottom window" })
