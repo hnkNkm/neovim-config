@@ -22,6 +22,15 @@ end, { desc = "Smart quit: close window or quit all" })
 -- Close current buffer
 map("n", "<leader>x", ":bd<CR>", { desc = "Close current buffer" })
 
+-- Buffer management (available in all environments)
+map("n", "<leader>bb", ":bp<CR>", { desc = "Go to previous buffer" })
+map("n", "<leader>bn", ":bn<CR>", { desc = "Go to next buffer" })
+map("n", "<leader>bl", ":ls<CR>", { desc = "List buffers" })
+map("n", "<Tab>", ":bn<CR>", { desc = "Next buffer" })
+map("n", "<S-Tab>", ":bp<CR>", { desc = "Previous buffer" })
+-- Alternative buffer navigation
+map("n", "]b", ":bn<CR>", { desc = "Next buffer" })
+map("n", "[b", ":bp<CR>", { desc = "Previous buffer" })
 
 -- Clear search highlights
 map("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
@@ -38,13 +47,6 @@ if not in_vscode then
   map("n", "<leader>tx", ":tabclose<CR>", { desc = "Close current tab" }) -- close current tab
   map("n", "<leader>tn", ":tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
   map("n", "<leader>tp", ":tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
-
-  -- Buffer management
-  map("n", "<leader>bb", ":bp<CR>", { desc = "Go to previous buffer" })
-  map("n", "<leader>bn", ":bn<CR>", { desc = "Go to next buffer" })
-  map("n", "<leader>bl", ":ls<CR>", { desc = "List buffers" })
-  map("n", "<Tab>", ":bn<CR>", { desc = "Next buffer" })
-  map("n", "<S-Tab>", ":bp<CR>", { desc = "Previous buffer" })
 
   -- Window navigation
   map("n", "<C-h>", "<C-w>h", { desc = "Navigate to the left window" })
