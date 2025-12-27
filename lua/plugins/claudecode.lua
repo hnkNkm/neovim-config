@@ -3,13 +3,12 @@
 
 return {
   "coder/claudecode.nvim",
-  dependencies = { "folke/snacks.nvim" },
   enabled = not vim.g.vscode, -- Disable in VSCode
   config = true,
   opts = {
-    -- Claude Code CLIの実際のパスを指定
     terminal_cmd = "/Users/hnk/.claude/local/claude",
-    log_level = "info", -- 通常のログレベル
+    terminal = "native", -- Use native terminal instead of snacks.nvim
+    log_level = "info",
   },
   keys = {
     { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude Code" },

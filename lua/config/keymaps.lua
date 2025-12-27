@@ -45,8 +45,6 @@ if not in_vscode then
   -- Tab management
   map("n", "<leader>to", ":tabnew<CR>", { desc = "Open new tab" }) -- open new tab
   map("n", "<leader>tx", ":tabclose<CR>", { desc = "Close current tab" }) -- close current tab
-  map("n", "<leader>tn", ":tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
-  map("n", "<leader>tp", ":tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 
   -- Window navigation
   map("n", "<C-h>", "<C-w>h", { desc = "Navigate to the left window" })

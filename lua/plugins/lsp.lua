@@ -106,7 +106,7 @@ return {
           -- Diagnostics
           map("n", "[d", vim.diagnostic.goto_prev, opts)
           map("n", "]d", vim.diagnostic.goto_next, opts)
-          map("n", "<leader>q", vim.diagnostic.setloclist, opts)
+          map("n", "<leader>lq", vim.diagnostic.setloclist, opts)
         end,
       })
     end,
