@@ -4,63 +4,44 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a VSCode-compatible Neovim configuration that uses lazy.nvim for plugin management. The configuration intelligently detects whether it's running in VSCode or standalone Neovim and adjusts features accordingly.
+VSCode-compatible Neovim configuration using lazy.nvim. Detects `vim.g.vscode` to conditionally load plugins and keymaps.
 
 ## Architecture
 
-The configuration follows a modular structure:
-- `init.lua` - Entry point that bootstraps lazy.nvim and loads all configuration
-- `lua/config/` - Core Neovim settings (options, keymaps, filetypes)
-- `lua/plugins/` - Individual plugin configurations, each returning a plugin spec table
-- `lazy-lock.json` - Locked plugin versions for reproducibility
+```
+init.lua                 # Bootstraps lazy.nvim, loads config modules, sets colorscheme
+lua/config/
+  options.lua            # Vim options (tabs, search, clipboard, etc.)
+  keymaps.lua            # All keymaps with VSCode conditional logic
+  filetypes.lua          # Filetype-specific settings
+lua/plugins/
+  *.lua                  # Each file returns a lazy.nvim plugin spec table
+```
 
-Key architectural decisions:
-- All plugins check `vim.g.vscode` to determine VSCode compatibility
-- Plugin configurations are isolated in separate files for maintainability
-- Leader key is set to space for all environments
+Key patterns:
+- Plugins use `enabled = not vim.g.vscode` to disable in VSCode
+- LSP keymaps are set in `LspAttach` autocmd (lua/plugins/lsp.lua:80-111)
+- Terminal integration uses toggleterm with custom REPL functions (lua/plugins/terminal.lua)
 
 ## Commands
 
-### Plugin Management
-```bash
-# Update plugins (in Neovim)
-:Lazy sync
-
-# Check plugin status
-:Lazy
-
-# Clean unused plugins
-:Lazy clean
+```vim
+:Lazy sync              " Update all plugins
+:Lazy reload <name>     " Reload specific plugin
+:source %               " Reload current Lua file
+:messages               " Check for errors
+:LspInfo                " Debug LSP connections
+:Mason                  " Manage LSP servers
 ```
 
-### LSP and Formatting
-- LSP servers are automatically installed via Mason when opening relevant files
-- Format current buffer: `<leader>f` (standalone Neovim only)
-- LSP actions are bound to standard keys (gd, K, etc.) in standalone mode
+## Known Issues
 
-### Development Workflow
-Since this is a Neovim configuration, there's no traditional build/test system. When modifying:
-1. Test changes by restarting Neovim or running `:source %` on the changed file
-2. Use `:Lazy reload <plugin-name>` to reload specific plugins
-3. Check `:messages` and `:LspInfo` for debugging
+- `mason-lspconfig.nvim` handlers are disabled due to errors (lua/plugins/lsp.lua:49-76)
+- Diagnostics/linters in none-ls are commented out (lua/plugins/formatting.lua:28-34)
 
-## Custom Claude Plugin
+## Claude Code Integration
 
-There's a custom Claude AI integration plugin at `lua/plugins/claude.lua` that references a local development plugin at `~/programs/lua/nvim-myplugin/`. When working with this:
-- The plugin provides AI-powered code assistance within Neovim
-- API keys should be stored in environment variables, not in the source code
-- Test the plugin using the test file at `~/programs/lua/nvim-myplugin/tests/claude_test.lua`
-
-## VSCode Compatibility
-
-The configuration maintains compatibility by:
-- Disabling UI-heavy plugins when `vim.g.vscode` is true
-- Preserving essential mappings that work in both environments
-- Using conditional plugin loading with `enabled = not vim.g.vscode`
-
-## Important Files
-
-- `README.md` - Comprehensive user documentation and key mappings
-- `lua/plugins/lsp.lua` - Language server configurations
-- `lua/plugins/formatting.lua` - Code formatting setup (currently has linters disabled)
-- `lua/config/keymaps.lua` - All custom key mappings with VSCode checks
+The `claudecode.nvim` plugin (lua/plugins/claudecode.lua) provides MCP integration:
+- `<leader>ac` toggles Claude Code terminal
+- `<leader>as` sends visual selection to Claude
+- Uses local Claude CLI at `/Users/hnk/.claude/local/claude`
