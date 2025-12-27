@@ -88,6 +88,7 @@ return {
         direction = "float", -- 'vertical', 'horizontal', 'tab', 'float'
         close_on_exit = true,
         shell = vim.o.shell,
+        hidden = true, -- Hide terminal buffers from buffer list
         float_opts = {
           border = "curved",
           winblend = 0,
@@ -96,6 +97,10 @@ return {
             background = "Normal",
           },
         },
+        -- Exclude terminal buffers from buffer list
+        on_create = function(term)
+          vim.opt_local.buflisted = false
+        end,
       })
 
       -- Custom terminal functions
@@ -106,6 +111,9 @@ return {
         cmd = "lazygit",
         hidden = true,
         direction = "float",
+        on_open = function(term)
+          vim.opt_local.buflisted = false
+        end,
       })
 
       function _G.toggle_lazygit()
@@ -117,6 +125,9 @@ return {
         cmd = "node",
         hidden = true,
         direction = "float",
+        on_open = function(term)
+          vim.opt_local.buflisted = false
+        end,
       })
 
       function _G.toggle_node()
@@ -128,6 +139,9 @@ return {
         cmd = "python",
         hidden = true,
         direction = "float",
+        on_open = function(term)
+          vim.opt_local.buflisted = false
+        end,
       })
 
       function _G.toggle_python()
@@ -136,27 +150,29 @@ return {
 
       -- Additional keymaps for toggleterm
       local map = vim.keymap.set
+
+      -- Main terminal keymaps
+      map("n", "<leader>tt", function()
+        local dir = get_current_dir()
+        vim.cmd("ToggleTerm direction=float dir=" .. vim.fn.fnameescape(dir))
+      end, { desc = "Toggle floating terminal" })
+      map("n", "<leader>tv", function()
+        local dir = get_current_dir()
+        vim.cmd("ToggleTerm direction=vertical dir=" .. vim.fn.fnameescape(dir))
+      end, { desc = "Toggle terminal right (vertical)" })
+      map("n", "<leader>ts", function()
+        local dir = get_current_dir()
+        vim.cmd("ToggleTerm direction=horizontal dir=" .. vim.fn.fnameescape(dir))
+      end, { desc = "Toggle terminal below (horizontal)" })
+      map("n", "<leader>tT", function()
+        local dir = get_current_dir()
+        vim.cmd("ToggleTerm direction=tab dir=" .. vim.fn.fnameescape(dir))
+      end, { desc = "Toggle terminal in new tab" })
+
+      -- REPL keymaps
       map("n", "<leader>tg", "<cmd>lua toggle_lazygit()<CR>", { desc = "Toggle Lazygit" })
       map("n", "<leader>tn", "<cmd>lua toggle_node()<CR>", { desc = "Toggle Node REPL" })
       map("n", "<leader>tp", "<cmd>lua toggle_python()<CR>", { desc = "Toggle Python REPL" })
-      map("n", "<leader>tf", function()
-        local dir = get_current_dir()
-        vim.cmd("ToggleTerm direction=float dir=" .. vim.fn.fnameescape(dir))
-      end, { desc = "Toggle floating terminal in current directory" })
-      
-      -- ToggleTerm with specific positions
-      map("n", "<leader>Tj", function()
-        local dir = get_current_dir()
-        vim.cmd("ToggleTerm direction=horizontal dir=" .. vim.fn.fnameescape(dir))
-      end, { desc = "Toggle terminal below in current directory" })
-      map("n", "<leader>Tl", function()
-        local dir = get_current_dir()
-        vim.cmd("ToggleTerm direction=vertical dir=" .. vim.fn.fnameescape(dir))
-      end, { desc = "Toggle terminal right in current directory" })
-      map("n", "<leader>Tt", function()
-        local dir = get_current_dir()
-        vim.cmd("ToggleTerm direction=tab dir=" .. vim.fn.fnameescape(dir))
-      end, { desc = "Toggle terminal in new tab in current directory" })
     end,
   },
 }

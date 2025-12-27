@@ -69,18 +69,18 @@ if not in_vscode then
   map("n", "<leader>rm", "<C-w>|<C-w>_", { desc = "Maximize current window" })
   map("n", "<leader>rr", "<C-w>=", { desc = "Restore equal window sizes" })
 
-  -- Terminal (open relative to current window)
-  map("n", "<leader>tt", ":terminal<CR>", { desc = "Open terminal in new buffer" })
-  map("n", "<leader>tl", ":rightbelow vsplit | terminal<CR>", { desc = "Open terminal to the right" })
-  map("n", "<leader>th", ":leftabove vsplit | terminal<CR>", { desc = "Open terminal to the left" })
-  map("n", "<leader>tj", ":rightbelow split | terminal<CR>", { desc = "Open terminal below" })
-  map("n", "<leader>tk", ":leftabove split | terminal<CR>", { desc = "Open terminal above" })
-  
-  -- Quick terminal toggles for common positions
-  map("n", "<leader>tv", ":rightbelow vsplit | terminal<CR>", { desc = "Terminal right (vertical)" })
-  map("n", "<leader>ts", ":rightbelow split | terminal<CR>", { desc = "Terminal below (horizontal)" })
-  
-  map("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" }) -- Use Esc to exit terminal mode
+  -- Terminal mode mapping: Double Esc to exit, single Esc sends to terminal
+  local last_esc_time = 0
+  map("t", "<Esc>", function()
+    local current_time = vim.loop.now()
+    if current_time - last_esc_time < 300 then  -- 300ms以内に2回押したら抜ける
+      last_esc_time = 0
+      return "<C-\\><C-n>"
+    else
+      last_esc_time = current_time
+      return "<Esc>"
+    end
+  end, { expr = true, desc = "Double Esc to exit terminal mode" })
 
   -- Git integration
   map("n", "<leader>gg", "<cmd>lua toggle_lazygit()<CR>", { desc = "Open lazygit" })
