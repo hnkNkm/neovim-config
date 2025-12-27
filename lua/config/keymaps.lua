@@ -69,9 +69,9 @@ if not in_vscode then
   map("n", "<leader>rm", "<C-w>|<C-w>_", { desc = "Maximize current window" })
   map("n", "<leader>rr", "<C-w>=", { desc = "Restore equal window sizes" })
 
-  -- Terminal mode mapping: Double Esc to exit, single Esc sends to terminal
+  -- Terminal mode mapping: Double Esc/C-] to exit, single press sends to terminal
   local last_esc_time = 0
-  map("t", "<Esc>", function()
+  local function handle_terminal_escape()
     local current_time = vim.loop.now()
     if current_time - last_esc_time < 300 then  -- 300ms以内に2回押したら抜ける
       last_esc_time = 0
@@ -80,7 +80,9 @@ if not in_vscode then
       last_esc_time = current_time
       return "<Esc>"
     end
-  end, { expr = true, desc = "Double Esc to exit terminal mode" })
+  end
+  map("t", "<Esc>", handle_terminal_escape, { expr = true, desc = "Double Esc to exit terminal mode" })
+  map("t", "<C-]>", handle_terminal_escape, { expr = true, desc = "Double C-] to exit terminal mode" })
 
   -- Git integration
   map("n", "<leader>gg", "<cmd>lua toggle_lazygit()<CR>", { desc = "Open lazygit" })
