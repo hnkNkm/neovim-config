@@ -9,8 +9,12 @@ return {
       -- vim.cmd([[colorscheme tokyonight]]) -- Already set in init.lua, but good practice to have config block
       require("tokyonight").setup({
         style = "storm", -- You can change this to "night", "moon", or "day"
-         -- For more configuration options, see the plugin's documentation
-       })
+        transparent = true, -- Enable background transparency
+        styles = {
+          sidebars = "transparent", -- Style for sidebars
+          floats = "transparent", -- Style for floating windows
+        },
+      })
      end,
    },
 }

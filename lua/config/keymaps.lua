@@ -10,17 +10,72 @@ map("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 -- Save file with leader w
 map("n", "<leader>w", ":w<CR>", { desc = "Save file" })
 
--- Quit file with leader q
+-- Quit file with leader q (smart quit with buffer switching)
 map("n", "<leader>q", function()
-  if #vim.api.nvim_list_wins() > 1 then
-    vim.cmd("q")
-  else
-    vim.cmd("qa")
+  local wins = vim.api.nvim_list_wins()
+  local current_buf = vim.api.nvim_get_current_buf()
+  local bufs = vim.api.nvim_list_bufs()
+  local valid_bufs = {}
+  
+  -- Find all valid buffers (loaded and listed)
+  for _, buf in ipairs(bufs) do
+    if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buflisted then
+      table.insert(valid_bufs, buf)
+    end
   end
-end, { desc = "Smart quit: close window or quit all" })
+  
+  -- If more than one window, just close the window
+  if #wins > 1 then
+    vim.cmd("q")
+  -- If only one window and only one buffer, quit all
+  elseif #valid_bufs <= 1 then
+    vim.cmd("qa")
+  -- If only one window but multiple buffers, switch buffer first then delete current
+  else
+    -- Store current buffer to delete it later
+    local buf_to_delete = current_buf
+    
+    -- Try to switch to the next buffer
+    vim.cmd("bnext")
+    
+    -- If we're still on the same buffer (means we were on the last buffer), go to previous
+    if vim.api.nvim_get_current_buf() == buf_to_delete then
+      vim.cmd("bprevious")
+    end
+    
+    -- Now we should be on a different buffer, so delete the original one
+    if vim.api.nvim_get_current_buf() ~= buf_to_delete then
+      vim.api.nvim_buf_delete(buf_to_delete, { force = false })
+    end
+  end
+end, { desc = "Smart quit: close window/buffer or quit all" })
 
--- Close current buffer
-map("n", "<leader>x", ":bd<CR>", { desc = "Close current buffer" })
+-- Close current buffer (smart close - switch to next buffer first)
+map("n", "<leader>x", function()
+  local current_buf = vim.api.nvim_get_current_buf()
+  local bufs = vim.api.nvim_list_bufs()
+  local valid_bufs = {}
+  
+  -- Find all valid buffers (loaded and listed)
+  for _, buf in ipairs(bufs) do
+    if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buflisted then
+      table.insert(valid_bufs, buf)
+    end
+  end
+  
+  -- If there's more than one buffer, switch to another before closing
+  if #valid_bufs > 1 then
+    -- Try to switch to the next or previous buffer
+    vim.cmd("bn")
+    -- If we're still on the same buffer (last buffer), go to previous
+    if vim.api.nvim_get_current_buf() == current_buf then
+      vim.cmd("bp")
+    end
+  end
+  
+  -- Now close the original buffer
+  vim.api.nvim_buf_delete(current_buf, { force = false })
+end, { desc = "Close current buffer (smart)" })
 
 -- Buffer management (available in all environments)
 map("n", "<leader>bb", ":bp<CR>", { desc = "Go to previous buffer" })
@@ -46,11 +101,23 @@ if not in_vscode then
   map("n", "<leader>to", ":tabnew<CR>", { desc = "Open new tab" }) -- open new tab
   map("n", "<leader>tx", ":tabclose<CR>", { desc = "Close current tab" }) -- close current tab
 
-  -- Window navigation
+  -- Window navigation (Normal mode)
   map("n", "<C-h>", "<C-w>h", { desc = "Navigate to the left window" })
   map("n", "<C-j>", "<C-w>j", { desc = "Navigate to the bottom window" })
   map("n", "<C-k>", "<C-w>k", { desc = "Navigate to the top window" })
   map("n", "<C-l>", "<C-w>l", { desc = "Navigate to the right window" })
+  
+  -- Window navigation (Insert mode) - Claude Code実行中でも移動可能
+  map("i", "<C-h>", "<Esc><C-w>h", { desc = "Navigate to the left window from insert" })
+  map("i", "<C-j>", "<Esc><C-w>j", { desc = "Navigate to the bottom window from insert" })
+  map("i", "<C-k>", "<Esc><C-w>k", { desc = "Navigate to the top window from insert" })
+  map("i", "<C-l>", "<Esc><C-w>l", { desc = "Navigate to the right window from insert" })
+  
+  -- Window navigation (Terminal mode) - Claude Code実行中でも移動可能
+  map("t", "<C-h>", "<C-\\><C-n><C-w>h", { desc = "Navigate to the left window from terminal" })
+  map("t", "<C-j>", "<C-\\><C-n><C-w>j", { desc = "Navigate to the bottom window from terminal" })
+  map("t", "<C-k>", "<C-\\><C-n><C-w>k", { desc = "Navigate to the top window from terminal" })
+  map("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "Navigate to the right window from terminal" })
   
   -- Window resizing (leader + r prefix)
   map("n", "<leader>rh", ":vertical resize -5<CR>", { desc = "Decrease window width" })
