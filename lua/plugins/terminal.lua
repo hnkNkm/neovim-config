@@ -151,45 +151,12 @@ return {
       -- Additional keymaps for toggleterm
       local map = vim.keymap.set
 
-      -- Create dedicated terminals for each direction (using fixed IDs)
-      -- ID 1: float, ID 2: vertical, ID 3: horizontal, ID 4: tab
-      local float_term = Terminal:new({
-        direction = "float",
-        hidden = true,
-        on_open = function(term)
-          vim.opt_local.buflisted = false
-        end,
-      })
-
-      local vertical_term = Terminal:new({
-        direction = "vertical",
-        hidden = true,
-        on_open = function(term)
-          vim.opt_local.buflisted = false
-        end,
-      })
-
-      local horizontal_term = Terminal:new({
-        direction = "horizontal",
-        hidden = true,
-        on_open = function(term)
-          vim.opt_local.buflisted = false
-        end,
-      })
-
-      local tab_term = Terminal:new({
-        direction = "tab",
-        hidden = true,
-        on_open = function(term)
-          vim.opt_local.buflisted = false
-        end,
-      })
-
-      -- Main terminal keymaps (each toggles its own dedicated terminal)
-      map("n", "<leader>tt", function() float_term:toggle() end, { desc = "Toggle floating terminal" })
-      map("n", "<leader>tv", function() vertical_term:toggle() end, { desc = "Toggle terminal right (vertical)" })
-      map("n", "<leader>ts", function() horizontal_term:toggle() end, { desc = "Toggle terminal below (horizontal)" })
-      map("n", "<leader>tT", function() tab_term:toggle() end, { desc = "Toggle terminal in new tab" })
+      -- Main terminal keymaps using numbered terminals for different directions
+      -- Using different IDs allows multiple terminals but only one per direction
+      map("n", "<leader>tt", "<cmd>1ToggleTerm direction=float<CR>", { desc = "Toggle floating terminal" })
+      map("n", "<leader>tv", "<cmd>2ToggleTerm size=80 direction=vertical<CR>", { desc = "Toggle terminal right (vertical)" })
+      map("n", "<leader>ts", "<cmd>3ToggleTerm size=15 direction=horizontal<CR>", { desc = "Toggle terminal below (horizontal)" })
+      map("n", "<leader>tT", "<cmd>4ToggleTerm direction=tab<CR>", { desc = "Toggle terminal in new tab" })
 
       -- REPL keymaps
       map("n", "<leader>tg", "<cmd>lua toggle_lazygit()<CR>", { desc = "Toggle Lazygit" })

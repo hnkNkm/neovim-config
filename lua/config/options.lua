@@ -21,6 +21,10 @@ opt.completeopt = "menuone,noselect" -- Set completion options
 opt.updatetime = 300 -- Faster completion (default is 4000ms)
 opt.signcolumn = "yes" -- Always show the sign column
 
+-- Window split behavior
+opt.splitright = true -- Open vertical splits to the right
+opt.splitbelow = true -- Open horizontal splits below
+
 -- Help window settings
 opt.helpheight = 12 -- Minimum height of help window
 opt.helplang = "en" -- Set help language to English
