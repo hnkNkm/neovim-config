@@ -58,35 +58,12 @@ if not in_vscode then
   map("t", "<C-k>", "<C-\\><C-n><C-w>k", { desc = "Navigate to the top window from terminal" })
   map("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "Navigate to the right window from terminal" })
   
-  -- Window resizing (leader + r prefix)
-  map("n", "<leader>rh", ":vertical resize -5<CR>", { desc = "Decrease window width" })
-  map("n", "<leader>rl", ":vertical resize +5<CR>", { desc = "Increase window width" })
-  map("n", "<leader>rk", ":resize +5<CR>", { desc = "Increase window height" })
-  map("n", "<leader>rj", ":resize -5<CR>", { desc = "Decrease window height" })
-  
-  -- Alternative: Use +/- for quick resizing
-  map("n", "<leader>r+", ":vertical resize +10<CR>", { desc = "Increase width by 10" })
-  map("n", "<leader>r-", ":vertical resize -10<CR>", { desc = "Decrease width by 10" })
-  map("n", "<leader>r=", "<C-w>=", { desc = "Make all windows equal size" })
-  
-  -- Option to maximize current window
+  -- Window resizing
+  map("n", "<leader>r=", "<C-w>=", { desc = "Make windows equal size" })
   map("n", "<leader>rm", "<C-w>|<C-w>_", { desc = "Maximize current window" })
-  map("n", "<leader>rr", "<C-w>=", { desc = "Restore equal window sizes" })
 
-  -- Terminal mode mapping: Double Esc/C-] to exit, single press sends to terminal
-  local last_esc_time = 0
-  local function handle_terminal_escape()
-    local current_time = vim.loop.now()
-    if current_time - last_esc_time < 300 then  -- 300ms以内に2回押したら抜ける
-      last_esc_time = 0
-      return "<C-\\><C-n>"
-    else
-      last_esc_time = current_time
-      return "<Esc>"
-    end
-  end
-  map("t", "<Esc>", handle_terminal_escape, { expr = true, desc = "Double Esc to exit terminal mode" })
-  map("t", "<C-]>", handle_terminal_escape, { expr = true, desc = "Double C-] to exit terminal mode" })
+  -- Terminal mode mapping: simple exit
+  map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
   -- Git integration
   map("n", "<leader>gg", "<cmd>lua toggle_lazygit()<CR>", { desc = "Open lazygit" })
