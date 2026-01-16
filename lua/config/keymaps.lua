@@ -10,72 +10,11 @@ map("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 -- Save file with leader w
 map("n", "<leader>w", ":w<CR>", { desc = "Save file" })
 
--- Quit file with leader q (smart quit with buffer switching)
-map("n", "<leader>q", function()
-  local wins = vim.api.nvim_list_wins()
-  local current_buf = vim.api.nvim_get_current_buf()
-  local bufs = vim.api.nvim_list_bufs()
-  local valid_bufs = {}
-  
-  -- Find all valid buffers (loaded and listed)
-  for _, buf in ipairs(bufs) do
-    if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buflisted then
-      table.insert(valid_bufs, buf)
-    end
-  end
-  
-  -- If more than one window, just close the window
-  if #wins > 1 then
-    vim.cmd("q")
-  -- If only one window and only one buffer, quit all
-  elseif #valid_bufs <= 1 then
-    vim.cmd("qa")
-  -- If only one window but multiple buffers, switch buffer first then delete current
-  else
-    -- Store current buffer to delete it later
-    local buf_to_delete = current_buf
-    
-    -- Try to switch to the next buffer
-    vim.cmd("bnext")
-    
-    -- If we're still on the same buffer (means we were on the last buffer), go to previous
-    if vim.api.nvim_get_current_buf() == buf_to_delete then
-      vim.cmd("bprevious")
-    end
-    
-    -- Now we should be on a different buffer, so delete the original one
-    if vim.api.nvim_get_current_buf() ~= buf_to_delete then
-      vim.api.nvim_buf_delete(buf_to_delete, { force = false })
-    end
-  end
-end, { desc = "Smart quit: close window/buffer or quit all" })
+-- Quit file with leader q
+map("n", "<leader>q", ":q<CR>", { desc = "Quit window" })
 
--- Close current buffer (smart close - switch to next buffer first)
-map("n", "<leader>x", function()
-  local current_buf = vim.api.nvim_get_current_buf()
-  local bufs = vim.api.nvim_list_bufs()
-  local valid_bufs = {}
-  
-  -- Find all valid buffers (loaded and listed)
-  for _, buf in ipairs(bufs) do
-    if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buflisted then
-      table.insert(valid_bufs, buf)
-    end
-  end
-  
-  -- If there's more than one buffer, switch to another before closing
-  if #valid_bufs > 1 then
-    -- Try to switch to the next or previous buffer
-    vim.cmd("bn")
-    -- If we're still on the same buffer (last buffer), go to previous
-    if vim.api.nvim_get_current_buf() == current_buf then
-      vim.cmd("bp")
-    end
-  end
-  
-  -- Now close the original buffer
-  vim.api.nvim_buf_delete(current_buf, { force = false })
-end, { desc = "Close current buffer (smart)" })
+-- Close current buffer
+map("n", "<leader>x", ":Bdelete<CR>", { desc = "Close current buffer" })
 
 -- Buffer management (available in all environments)
 map("n", "<leader>bb", ":bp<CR>", { desc = "Go to previous buffer" })
