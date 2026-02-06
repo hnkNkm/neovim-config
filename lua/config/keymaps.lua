@@ -61,11 +61,9 @@ if not in_vscode then
   -- Window resizing
   map("n", "<leader>r=", "<C-w>=", { desc = "Make windows equal size" })
   map("n", "<leader>rm", "<C-w>|<C-w>_", { desc = "Maximize current window" })
-  -- Leader + Shift + hjkl for resizing (avoids terminal conflicts)
-  map("n", "<leader>H", ":vertical resize -2<CR>", { desc = "Decrease window width" })
-  map("n", "<leader>J", ":resize +2<CR>", { desc = "Increase window height" })
-  map("n", "<leader>K", ":resize -2<CR>", { desc = "Decrease window height" })
-  map("n", "<leader>L", ":vertical resize +2<CR>", { desc = "Increase window width" })
+  -- Direct size input
+  map("n", "<leader>rs", ":vertical resize ", { desc = "Set window width (type number)" })
+  map("n", "<leader>rh", ":resize ", { desc = "Set window height (type number)" })
 
   -- Terminal mode mapping: simple exit
   map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
