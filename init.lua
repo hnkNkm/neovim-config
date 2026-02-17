@@ -47,4 +47,8 @@ require("config.filetypes")
 -- Set colorscheme (only in regular Neovim, not in VSCode)
 if not vim.g.vscode then
   vim.cmd([[colorscheme tokyonight]])
+  
+  -- Always ensure an empty buffer exists at startup
+  -- This prevents files from opening in terminal windows
+  vim.cmd("enew")
 end

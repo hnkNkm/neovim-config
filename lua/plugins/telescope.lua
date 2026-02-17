@@ -55,43 +55,7 @@ return {
       -- Load extensions
       pcall(telescope.load_extension, "fzf")
 
-      -- Keymaps
-      local map = vim.keymap.set
-      
-      -- Different keymaps based on whether we're in VSCode or not
-      if vim.g.vscode then
-        -- In VSCode, only enable help-related features
-        map("n", "<leader>hk", "<cmd>Telescope keymaps<CR>", { desc = "Keymaps" })
-        map("n", "<leader>hh", "<cmd>Telescope help_tags<CR>", { desc = "Help pages" })
-        map("n", "<leader>hm", "<cmd>Telescope man_pages<CR>", { desc = "Man pages" })
-        map("n", "<leader>hc", "<cmd>Telescope commands<CR>", { desc = "Commands" })
-      else
-        -- In regular Neovim, enable all features
-        -- Find files
-        map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Find files" })
-        map("n", "<leader>fr", "<cmd>Telescope oldfiles<CR>", { desc = "Find recent files" })
-        map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Find buffers" })
-        
-        -- Find in files
-        map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Find text in project" })
-        map("n", "<leader>fw", "<cmd>Telescope grep_string<CR>", { desc = "Find word under cursor" })
-        
-        -- Git
-        map("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", { desc = "Git commits" })
-        map("n", "<leader>gs", "<cmd>Telescope git_status<CR>", { desc = "Git status" })
-        
-        -- LSP
-        map("n", "<leader>ls", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "Document symbols" })
-        map("n", "<leader>lr", "<cmd>Telescope lsp_references<CR>", { desc = "References" })
-        map("n", "<leader>ld", "<cmd>Telescope diagnostics bufnr=0<CR>", { desc = "Document diagnostics" })
-        map("n", "<leader>lD", "<cmd>Telescope diagnostics<CR>", { desc = "Workspace diagnostics" })
-        
-        -- Help
-        map("n", "<leader>hk", "<cmd>Telescope keymaps<CR>", { desc = "Keymaps" })
-        map("n", "<leader>hh", "<cmd>Telescope help_tags<CR>", { desc = "Help pages" })
-        map("n", "<leader>hm", "<cmd>Telescope man_pages<CR>", { desc = "Man pages" })
-        map("n", "<leader>hc", "<cmd>Telescope commands<CR>", { desc = "Commands" })
-      end
+      -- Keymaps are now centralized in lua/config/keymaps.lua
     end,
   },
 }

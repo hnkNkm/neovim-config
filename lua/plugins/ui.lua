@@ -71,9 +71,7 @@ return {
         end,
       })
 
-       -- Keymaps for nvim-tree
-      local map = vim.keymap.set
-      map("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
+      -- Keymaps are now centralized in lua/config/keymaps.lua
     end,
   },
 }

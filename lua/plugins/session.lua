@@ -12,19 +12,7 @@ return {
         save_empty = false, -- don't save if there are no open file buffers
       })
 
-      -- Keymaps for session management
-      local map = vim.keymap.set
-      map("n", "<leader>qs", function()
-        require("persistence").load()
-      end, { desc = "Restore session for current directory" })
-
-      map("n", "<leader>ql", function()
-        require("persistence").load({ last = true })
-      end, { desc = "Restore last session" })
-
-      map("n", "<leader>qd", function()
-        require("persistence").stop()
-      end, { desc = "Don't save current session" })
+      -- Keymaps are now centralized in lua/config/keymaps.lua
     end,
   },
 }
