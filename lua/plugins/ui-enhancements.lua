@@ -57,10 +57,7 @@ return {
         })
       end
 
-      -- Example keymaps using notify
-      vim.keymap.set("n", "<leader>nd", function()
-        require("notify").dismiss({ silent = true, pending = true })
-      end, { desc = "Dismiss all notifications" })
+      -- Keymaps are now centralized in lua/config/keymaps.lua
 
       -- Make notify globally available
       _G.notify_output = notify_output
@@ -201,15 +198,7 @@ return {
         },
       })
 
-      -- Keymaps for bufferline
-      local map = vim.keymap.set
-      map("n", "<leader>bp", "<cmd>BufferLinePick<CR>", { desc = "Pick buffer" })
-      map("n", "<leader>bc", "<cmd>BufferLinePickClose<CR>", { desc = "Pick buffer to close" })
-      map("n", "<leader>bP", "<cmd>BufferLineTogglePin<CR>", { desc = "Toggle buffer pin" })
-      map("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
-      map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
-      map("n", "<leader>br", "<cmd>BufferLineCloseRight<CR>", { desc = "Close buffers to the right" })
-      map("n", "<leader>bl", "<cmd>BufferLineCloseLeft<CR>", { desc = "Close buffers to the left" })
+      -- Keymaps are now centralized in lua/config/keymaps.lua
     end,
   },
 

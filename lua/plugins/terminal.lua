@@ -83,7 +83,7 @@ return {
         shade_terminals = true,
         shading_factor = 2,
         start_in_insert = true,
-        insert_mappings = true,
+        insert_mappings = false, -- Disable global insert mappings to avoid conflicts
         persist_size = true,
         direction = "float", -- 'vertical', 'horizontal', 'tab', 'float'
         close_on_exit = true,
@@ -148,53 +148,8 @@ return {
         python:toggle()
       end
 
-      -- Additional keymaps for toggleterm
-      local map = vim.keymap.set
-
-      -- Create dedicated terminals for each direction (using fixed IDs)
-      -- ID 1: float, ID 2: vertical, ID 3: horizontal, ID 4: tab
-      local float_term = Terminal:new({
-        direction = "float",
-        hidden = true,
-        on_open = function(term)
-          vim.opt_local.buflisted = false
-        end,
-      })
-
-      local vertical_term = Terminal:new({
-        direction = "vertical",
-        hidden = true,
-        on_open = function(term)
-          vim.opt_local.buflisted = false
-        end,
-      })
-
-      local horizontal_term = Terminal:new({
-        direction = "horizontal",
-        hidden = true,
-        on_open = function(term)
-          vim.opt_local.buflisted = false
-        end,
-      })
-
-      local tab_term = Terminal:new({
-        direction = "tab",
-        hidden = true,
-        on_open = function(term)
-          vim.opt_local.buflisted = false
-        end,
-      })
-
-      -- Main terminal keymaps (each toggles its own dedicated terminal)
-      map("n", "<leader>tt", function() float_term:toggle() end, { desc = "Toggle floating terminal" })
-      map("n", "<leader>tv", function() vertical_term:toggle() end, { desc = "Toggle terminal right (vertical)" })
-      map("n", "<leader>ts", function() horizontal_term:toggle() end, { desc = "Toggle terminal below (horizontal)" })
-      map("n", "<leader>tT", function() tab_term:toggle() end, { desc = "Toggle terminal in new tab" })
-
-      -- REPL keymaps
-      map("n", "<leader>tg", "<cmd>lua toggle_lazygit()<CR>", { desc = "Toggle Lazygit" })
-      map("n", "<leader>tn", "<cmd>lua toggle_node()<CR>", { desc = "Toggle Node REPL" })
-      map("n", "<leader>tp", "<cmd>lua toggle_python()<CR>", { desc = "Toggle Python REPL" })
+      -- Keymaps are now centralized in lua/config/keymaps.lua
+      -- Terminal-specific functions are kept here for toggleterm to use
     end,
   },
 }

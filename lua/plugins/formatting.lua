@@ -61,11 +61,7 @@ return {
         end,
       })
 
-      -- Keymaps
-      local map = vim.keymap.set
-      map("n", "<leader>lf", function()
-        vim.lsp.buf.format({ async = true })
-      end, { desc = "Format document" })
+      -- Keymaps are now centralized in lua/config/keymaps.lua
     end,
   },
 }

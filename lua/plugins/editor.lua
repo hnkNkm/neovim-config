@@ -151,19 +151,7 @@ return {
         },
       })
 
-      -- Keymaps for todo-comments
-      vim.keymap.set("n", "]t", function()
-        require("todo-comments").jump_next()
-      end, { desc = "Next todo comment" })
-
-      vim.keymap.set("n", "[t", function()
-        require("todo-comments").jump_prev()
-      end, { desc = "Previous todo comment" })
-
-      -- Telescope integration (only in regular Neovim)
-      if not vim.g.vscode then
-        vim.keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<CR>", { desc = "Find todos in project" })
-      end
+      -- Keymaps are now centralized in lua/config/keymaps.lua
     end,
   },
 }
