@@ -148,6 +148,83 @@ return {
         python:toggle()
       end
 
+      -- Smart terminal toggle functions
+      -- These will close any existing terminal before opening a new one with different direction
+      local function get_open_terminals()
+        local terminals = require("toggleterm.terminal").get_all()
+        local open_terms = {}
+        for _, term in ipairs(terminals) do
+          if term:is_open() then
+            table.insert(open_terms, term)
+          end
+        end
+        return open_terms
+      end
+      
+      local function smart_toggle_term(id, direction, size)
+        local open_terms = get_open_terminals()
+        local target_term = nil
+        
+        -- Find if the target terminal exists
+        for _, term in ipairs(require("toggleterm.terminal").get_all()) do
+          if term.id == id then
+            target_term = term
+            break
+          end
+        end
+        
+        -- If target terminal is already open, just toggle it
+        if target_term and target_term:is_open() then
+          target_term:toggle()
+          return
+        end
+        
+        -- If other terminals are open and we're opening a non-floating terminal
+        if #open_terms > 0 and direction ~= "float" and direction ~= "tab" then
+          -- Close other non-floating terminals to avoid stacking
+          for _, term in ipairs(open_terms) do
+            if term.id ~= id and term.direction ~= "float" and term.direction ~= "tab" then
+              term:close()
+            end
+          end
+        end
+        
+        -- Open the target terminal
+        local cmd = string.format("%dToggleTerm", id)
+        if direction then
+          cmd = cmd .. " direction=" .. direction
+        end
+        if size then
+          cmd = cmd .. " size=" .. tostring(size)
+        end
+        vim.cmd(cmd)
+      end
+      
+      -- Global functions for smart terminal toggling
+      function _G.smart_toggle_term_default()
+        smart_toggle_term(1, "float", nil)
+      end
+      
+      function _G.smart_toggle_term_float()
+        smart_toggle_term(2, "float", nil)
+      end
+      
+      function _G.smart_toggle_term_horizontal()
+        smart_toggle_term(3, "horizontal", nil)
+      end
+      
+      function _G.smart_toggle_term_vertical()
+        smart_toggle_term(4, "vertical", nil)
+      end
+      
+      function _G.smart_toggle_term_small()
+        smart_toggle_term(5, "horizontal", 15)
+      end
+      
+      function _G.smart_toggle_term_tab()
+        smart_toggle_term(6, "tab", nil)
+      end
+
       -- Keymaps are now centralized in lua/config/keymaps.lua
       -- Terminal-specific functions are kept here for toggleterm to use
     end,

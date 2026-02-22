@@ -194,13 +194,13 @@ if not in_vscode then
   map("n", "<C-t>", ":NvimTreeFocus<CR>", { desc = "Focus file tree" })
   map("n", "<C-f>", ":NvimTreeFindFile<CR>", { desc = "Find current file in tree" })
   
-  -- ToggleTerm (Terminal) - Each with unique ID for independent instances
-  map("n", "<leader>tt", "<cmd>1ToggleTerm<CR>", { desc = "Toggle terminal (default)" })
-  map("n", "<leader>tf", "<cmd>2ToggleTerm direction=float<CR>", { desc = "Toggle floating terminal" })
-  map("n", "<leader>th", "<cmd>3ToggleTerm direction=horizontal<CR>", { desc = "Toggle horizontal terminal" })
-  map("n", "<leader>tv", "<cmd>4ToggleTerm direction=vertical<CR>", { desc = "Toggle vertical terminal" })
-  map("n", "<leader>ts", "<cmd>5ToggleTerm size=15 direction=horizontal<CR>", { desc = "Toggle small terminal below" })
-  map("n", "<leader>tT", "<cmd>6ToggleTerm direction=tab<CR>", { desc = "Toggle terminal in new tab" })
+  -- ToggleTerm (Terminal) - Smart toggle that closes other terminals when needed
+  map("n", "<leader>tt", "<cmd>lua smart_toggle_term_default()<CR>", { desc = "Toggle terminal (floating)" })
+  map("n", "<leader>tf", "<cmd>lua smart_toggle_term_float()<CR>", { desc = "Toggle floating terminal" })
+  map("n", "<leader>th", "<cmd>lua smart_toggle_term_horizontal()<CR>", { desc = "Toggle horizontal terminal" })
+  map("n", "<leader>tv", "<cmd>lua smart_toggle_term_vertical()<CR>", { desc = "Toggle vertical terminal" })
+  map("n", "<leader>ts", "<cmd>lua smart_toggle_term_small()<CR>", { desc = "Toggle small terminal below" })
+  map("n", "<leader>tT", "<cmd>lua smart_toggle_term_tab()<CR>", { desc = "Toggle terminal in new tab" })
   
   -- REPL keymaps (requires functions to be defined)
   map("n", "<leader>tg", "<cmd>lua toggle_lazygit()<CR>", { desc = "Toggle Lazygit" })
@@ -394,6 +394,15 @@ function _G.set_terminal_keymaps()
   -- Terminal escape keymaps
   vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
   vim.keymap.set('t', '<C-]>', [[<C-\><C-n>]], opts)
+  
+  -- Claude Code interruption keybinding
+  -- Use Ctrl+Q to send raw Escape to the terminal (interrupts Claude Code)
+  vim.keymap.set('t', '<C-q>', function()
+    local chan = vim.b.terminal_job_id
+    if chan then
+      vim.fn.chansend(chan, '\27') -- Send ESC character (ASCII 27)
+    end
+  end, { buffer = 0, desc = "Interrupt Claude Code (Ctrl+Q)" })
   
   -- Only set navigation keymaps if not in Claude Code terminal
   -- This prevents conflicts with Claude's input handling
