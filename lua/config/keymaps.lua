@@ -127,11 +127,11 @@ if not in_vscode then
   map("n", "<C-k>", "<C-w>k", { desc = "Navigate to the top window" })
   map("n", "<C-l>", "<C-w>l", { desc = "Navigate to the right window" })
   
-  -- Window navigation (Insert mode) - Claude Code実行中でも移動可能
-  map("i", "<C-h>", "<Esc><C-w>h", { desc = "Navigate to the left window from insert" })
-  map("i", "<C-j>", "<Esc><C-w>j", { desc = "Navigate to the bottom window from insert" })
-  map("i", "<C-k>", "<Esc><C-w>k", { desc = "Navigate to the top window from insert" })
-  map("i", "<C-l>", "<Esc><C-w>l", { desc = "Navigate to the right window from insert" })
+  -- Window navigation (Insert mode) - Commented out to avoid conflicts with Claude Code
+  -- map("i", "<C-h>", "<Esc><C-w>h", { desc = "Navigate to the left window from insert" })
+  -- map("i", "<C-j>", "<Esc><C-w>j", { desc = "Navigate to the bottom window from insert" })
+  -- map("i", "<C-k>", "<Esc><C-w>k", { desc = "Navigate to the top window from insert" })
+  -- map("i", "<C-l>", "<Esc><C-w>l", { desc = "Navigate to the right window from insert" })
   
   -- Window navigation (Terminal mode) - Removed to avoid conflicts with Claude Code
   -- These are now set conditionally in set_terminal_keymaps() function below
@@ -194,13 +194,13 @@ if not in_vscode then
   map("n", "<C-t>", ":NvimTreeFocus<CR>", { desc = "Focus file tree" })
   map("n", "<C-f>", ":NvimTreeFindFile<CR>", { desc = "Find current file in tree" })
   
-  -- ToggleTerm (Terminal)
-  map("n", "<leader>tt", "<cmd>ToggleTerm<CR>", { desc = "Toggle terminal" })
-  map("n", "<leader>tf", "<cmd>ToggleTerm direction=float<CR>", { desc = "Toggle floating terminal" })
-  map("n", "<leader>th", "<cmd>ToggleTerm direction=horizontal<CR>", { desc = "Toggle horizontal terminal" })
-  map("n", "<leader>tv", "<cmd>ToggleTerm direction=vertical<CR>", { desc = "Toggle vertical terminal" })
-  map("n", "<leader>ts", "<cmd>3ToggleTerm size=15 direction=horizontal<CR>", { desc = "Toggle terminal below" })
-  map("n", "<leader>tT", "<cmd>4ToggleTerm direction=tab<CR>", { desc = "Toggle terminal in new tab" })
+  -- ToggleTerm (Terminal) - Each with unique ID for independent instances
+  map("n", "<leader>tt", "<cmd>1ToggleTerm<CR>", { desc = "Toggle terminal (default)" })
+  map("n", "<leader>tf", "<cmd>2ToggleTerm direction=float<CR>", { desc = "Toggle floating terminal" })
+  map("n", "<leader>th", "<cmd>3ToggleTerm direction=horizontal<CR>", { desc = "Toggle horizontal terminal" })
+  map("n", "<leader>tv", "<cmd>4ToggleTerm direction=vertical<CR>", { desc = "Toggle vertical terminal" })
+  map("n", "<leader>ts", "<cmd>5ToggleTerm size=15 direction=horizontal<CR>", { desc = "Toggle small terminal below" })
+  map("n", "<leader>tT", "<cmd>6ToggleTerm direction=tab<CR>", { desc = "Toggle terminal in new tab" })
   
   -- REPL keymaps (requires functions to be defined)
   map("n", "<leader>tg", "<cmd>lua toggle_lazygit()<CR>", { desc = "Toggle Lazygit" })
@@ -251,19 +251,6 @@ if not in_vscode then
   map("v", "<leader>as", "<cmd>ClaudeCodeSend<cr>", { desc = "Send selection to Claude" })
   map("n", "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", { desc = "Accept Claude's changes" })
   map("n", "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", { desc = "Reject Claude's changes" })
-  
-  -- SKKeleton (Japanese Input)
-  -- Use Ctrl+o for Japanese input (works in most terminals)
-  map("i", "<C-o><C-j>", "<Plug>(skkeleton-toggle)", { desc = "Toggle SKK Japanese input" })
-  map("c", "<C-o><C-j>", "<Plug>(skkeleton-toggle)", { desc = "Toggle SKK (command mode)" })
-  
-  -- Simple alternative mappings
-  map("i", "<C-l>", "<Plug>(skkeleton-toggle)", { desc = "Toggle SKK Japanese input" })
-  map("c", "<C-l>", "<Plug>(skkeleton-toggle)", { desc = "Toggle SKK (command mode)" })
-  
-  -- Leader-based keymaps
-  map("n", "<leader>j", "<cmd>call skkeleton#handle('toggle', {})<CR>a", { desc = "Toggle Japanese and enter insert" })
-  map("i", "<leader>j", "<Plug>(skkeleton-toggle)", { desc = "Toggle Japanese input" })
   
   -- Gitsigns (lazy-loaded, so wrapped in pcall)
   local ok, gs = pcall(require, "gitsigns")
@@ -350,8 +337,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- Documentation and Info
     map("n", "K", vim.lsp.buf.hover, opts("Hover Documentation"))
     map("n", "<leader>k", vim.lsp.buf.hover, opts("Hover Documentation (alt)"))
-    map("n", "<C-k>", vim.lsp.buf.signature_help, opts("Signature Help"))
-    map("i", "<C-k>", vim.lsp.buf.signature_help, opts("Signature Help"))
+    map("n", "<leader>K", vim.lsp.buf.signature_help, opts("Signature Help"))
+    -- Removed Insert mode <C-k> to avoid conflicts with Claude Code
     
     -- Code Actions and Refactoring
     map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts("Code Action"))
