@@ -21,6 +21,23 @@ opt.completeopt = "menuone,noselect" -- Set completion options
 opt.updatetime = 300 -- Faster completion (default is 4000ms)
 opt.signcolumn = "yes" -- Always show the sign column
 
+-- Auto reload files when changed outside of Neovim
+opt.autoread = true -- Automatically read file when changed outside of Neovim
+
+-- Auto reload trigger on focus/buffer switch
+vim.api.nvim_create_autocmd({"FocusGained", "BufEnter", "CursorHold", "CursorHoldI"}, {
+  pattern = "*",
+  command = "if mode() != 'c' | checktime | endif",
+})
+
+-- Notification when file changes
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+  pattern = "*",
+  callback = function()
+    vim.notify("File reloaded", vim.log.levels.INFO)
+  end,
+})
+
 -- Help window settings
 opt.helpheight = 12 -- Minimum height of help window
 opt.helplang = "en" -- Set help language to English

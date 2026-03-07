@@ -89,6 +89,11 @@ map("n", "<S-Tab>", ":bp<CR>", { desc = "Previous buffer" })
 map("n", "]b", ":bn<CR>", { desc = "Next buffer" })
 map("n", "[b", ":bp<CR>", { desc = "Previous buffer" })
 
+-- Buffer reload
+map("n", "<leader>br", ":e!<CR>", { desc = "Reload current buffer" })
+map("n", "<leader>bR", ":checktime<CR>", { desc = "Check all buffers for changes" })
+map("n", "<F5>", ":e!<CR>", { desc = "Reload buffer (F5)" })
+
 -- Clear search highlights
 map("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 map("n", "<Esc>", ":nohl<CR>", { desc = "Clear search highlights" })
@@ -231,7 +236,7 @@ if not in_vscode then
   map("n", "<leader>bP", "<cmd>BufferLineTogglePin<CR>", { desc = "Toggle buffer pin" })
   map("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
   map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
-  map("n", "<leader>br", "<cmd>BufferLineCloseRight<CR>", { desc = "Close buffers to the right" })
+  map("n", "<leader>bC", "<cmd>BufferLineCloseRight<CR>", { desc = "Close buffers to the right" })
   map("n", "<leader>bL", "<cmd>BufferLineCloseLeft<CR>", { desc = "Close buffers to the left" })
   
   -- Session Management (persistence.nvim)
