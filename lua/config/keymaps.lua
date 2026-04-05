@@ -3,10 +3,6 @@ local map = vim.keymap.set
 -- Detect if running in VSCode
 local in_vscode = vim.g.vscode
 
--- Set leader key to space (already set in init.lua)
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
 -- Basic mappings
 
 -- Save file with leader w

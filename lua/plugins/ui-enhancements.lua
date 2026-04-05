@@ -25,42 +25,6 @@ return {
 
       -- Set as default notify function
       vim.notify = notify
-
-      -- Utility functions for notifications
-      local function notify_output(command, opts)
-        local output = ""
-        local notification
-        local notify = function(msg, level)
-          if not notification then
-            notification = vim.notify(msg, level, opts)
-          else
-            notification = vim.notify(msg, level, {
-              replace = notification,
-              hide_from_history = true,
-            })
-          end
-        end
-
-        local on_data = function(_, data)
-          output = output .. table.concat(data, "\n")
-          notify(output, "info")
-        end
-
-        vim.fn.jobstart(command, {
-          on_stdout = on_data,
-          on_stderr = on_data,
-          on_exit = function(_, code)
-            if code ~= 0 then
-              notify("Command exited with code: " .. code, "error")
-            end
-          end,
-        })
-      end
-
-      -- Keymaps are now centralized in lua/config/keymaps.lua
-
-      -- Make notify globally available
-      _G.notify_output = notify_output
     end,
   },
 
