@@ -34,10 +34,13 @@ Key patterns:
 :Mason                  " Manage LSP servers
 ```
 
-## Known Issues
+## Mason Configuration
 
-- `mason-lspconfig.nvim` handlers are disabled due to errors (lua/plugins/lsp.lua:49-76)
-- Diagnostics/linters in none-ls are commented out (lua/plugins/formatting.lua:28-34)
+Mason and mason-lspconfig.nvim are now properly configured:
+- Uses Neovim 0.11+'s native `vim.lsp.config()` API
+- Automatic installation via `ensure_installed` in mason-lspconfig
+- Automatic enabling of Mason-installed servers with `automatic_enable = true`
+- LSP servers configured: lua_ls, pyright, ts_ls, html, cssls, jsonls
 
 ## Claude Code Integration
 

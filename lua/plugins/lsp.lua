@@ -5,81 +5,55 @@ return {
     enabled = not vim.g.vscode,
     dependencies = {
       -- Automatically install LSPs, formatters, linters
-      "williamboman/mason.nvim",
+      { "williamboman/mason.nvim", opts = {} },
+      {
+        "mason-org/mason-lspconfig.nvim",
+        opts = {
+          ensure_installed = { "lua_ls", "pyright", "ts_ls", "html", "cssls", "jsonls" },
+          automatic_installation = true, -- Automatically install missing servers
+          automatic_enable = true, -- Automatically enable installed servers
+        },
+      },
 
       -- Useful status updates for LSP
       { "j-hui/fidget.nvim", opts = {} },
     },
     config = function()
-      -- First ensure mason is setup
-      require("mason").setup()
+      -- Mason is already setup via opts in dependencies
+      -- Setup mason-lspconfig (will be configured via opts above)
+      -- This handles automatic installation and enabling of servers
       
       -- Get the LSP capabilities provided by nvim-cmp
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
       
-      -- Check if using Neovim 0.11+ with new LSP API
-      if vim.lsp.config and vim.lsp.enable then
-        -- Neovim 0.11+ new API
-        -- nvim-lspconfig already loads configs automatically via vim.lsp.config
-        -- We just need to extend the configs with our custom settings
-        
-        -- Extend lua_ls configuration
-        vim.lsp.config("lua_ls", {
-          capabilities = capabilities,
-          settings = {
-            Lua = {
-              runtime = { version = "LuaJIT" },
-              diagnostics = { globals = { "vim" } },
-              workspace = { library = vim.api.nvim_get_runtime_file("", true) },
-              telemetry = { enable = false },
-            },
+      -- Configure servers via vim.lsp.config (Neovim 0.11+)
+      -- mason-lspconfig will automatically enable these when installed
+      
+      -- Configure lua_ls with custom settings
+      vim.lsp.config("lua_ls", {
+        capabilities = capabilities,
+        settings = {
+          Lua = {
+            runtime = { version = "LuaJIT" },
+            diagnostics = { globals = { "vim" } },
+            workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+            telemetry = { enable = false },
           },
+        },
+      })
+      
+      -- Configure other servers with just capabilities
+      -- This includes both ensure_installed servers and any others that might be auto-installed
+      local servers = { 
+        "pyright", "ts_ls", "html", "cssls", "jsonls",
+        -- Additional servers that might be auto-installed
+        "rust_analyzer", "gopls", "clangd", "bashls", "dockerls", 
+        "yamlls", "taplo", "marksman", "eslint", "tailwindcss"
+      }
+      for _, server in ipairs(servers) do
+        vim.lsp.config(server, {
+          capabilities = capabilities,
         })
-        
-        -- Extend other common LSP servers with capabilities
-        local servers = { "pyright", "ts_ls", "html", "cssls", "jsonls" }
-        for _, server in ipairs(servers) do
-          vim.lsp.config(server, {
-            capabilities = capabilities,
-          })
-        end
-        
-        -- Enable all configured servers
-        vim.lsp.enable("lua_ls")
-        for _, server in ipairs(servers) do
-          vim.lsp.enable(server)
-        end
-      else
-        -- Fallback for older Neovim versions
-        local ok, lspconfig = pcall(require, "lspconfig")
-        if not ok then
-          return
-        end
-        
-        -- Setup lua_ls
-        pcall(function()
-          lspconfig.lua_ls.setup({
-            capabilities = capabilities,
-            settings = {
-              Lua = {
-                runtime = { version = "LuaJIT" },
-                diagnostics = { globals = { "vim" } },
-                workspace = { library = vim.api.nvim_get_runtime_file("", true) },
-                telemetry = { enable = false },
-              },
-            },
-          })
-        end)
-        
-        -- Setup other common LSP servers if they are installed
-        local servers = { "pyright", "ts_ls", "html", "cssls", "jsonls" }
-        for _, server in ipairs(servers) do
-          pcall(function()
-            lspconfig[server].setup({
-              capabilities = capabilities,
-            })
-          end)
-        end
       end
       
 
