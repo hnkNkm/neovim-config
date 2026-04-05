@@ -125,6 +125,8 @@ if not in_vscode then
   -- Tab management
   map("n", "<leader>to", ":tabnew<CR>", { desc = "Open new tab" }) -- open new tab
   map("n", "<leader>tx", ":tabclose<CR>", { desc = "Close current tab" }) -- close current tab
+  map("n", "<leader>tn", ":tabnext<CR>", { desc = "Next tab" }) -- next tab
+  map("n", "<leader>tp", ":tabprevious<CR>", { desc = "Previous tab" }) -- previous tab
 
   -- Window navigation (Normal mode)
   map("n", "<C-h>", "<C-w>h", { desc = "Navigate to the left window" })

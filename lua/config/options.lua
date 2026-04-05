@@ -24,17 +24,26 @@ opt.signcolumn = "yes" -- Always show the sign column
 -- Auto reload files when changed outside of Neovim
 opt.autoread = true -- Automatically read file when changed outside of Neovim
 
--- Auto reload trigger on focus/buffer switch
-vim.api.nvim_create_autocmd({"FocusGained", "BufEnter", "CursorHold", "CursorHoldI"}, {
+-- Auto reload trigger on focus/buffer switch (less aggressive)
+vim.api.nvim_create_autocmd({"FocusGained", "BufEnter"}, {
   pattern = "*",
-  command = "if mode() != 'c' | checktime | endif",
+  callback = function()
+    -- Only check if not in command mode and not in special buffers
+    local buftype = vim.bo.buftype
+    if vim.fn.mode() ~= 'c' and buftype == "" then
+      vim.cmd("checktime")
+    end
+  end,
 })
 
--- Notification when file changes
+-- Notification when file changes (only for actual file changes)
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
   pattern = "*",
   callback = function()
-    vim.notify("File reloaded", vim.log.levels.INFO)
+    -- Only notify for actual files, not special buffers
+    if vim.bo.buftype == "" then
+      vim.notify("File reloaded from disk", vim.log.levels.INFO)
+    end
   end,
 })
 
