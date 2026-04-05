@@ -132,14 +132,6 @@ if not in_vscode then
   map("n", "<C-k>", "<C-w>k", { desc = "Navigate to the top window" })
   map("n", "<C-l>", "<C-w>l", { desc = "Navigate to the right window" })
   
-  -- Window navigation (Insert mode) - Commented out to avoid conflicts with Claude Code
-  -- map("i", "<C-h>", "<Esc><C-w>h", { desc = "Navigate to the left window from insert" })
-  -- map("i", "<C-j>", "<Esc><C-w>j", { desc = "Navigate to the bottom window from insert" })
-  -- map("i", "<C-k>", "<Esc><C-w>k", { desc = "Navigate to the top window from insert" })
-  -- map("i", "<C-l>", "<Esc><C-w>l", { desc = "Navigate to the right window from insert" })
-  
-  -- Window navigation (Terminal mode) - Removed to avoid conflicts with Claude Code
-  -- These are now set conditionally in set_terminal_keymaps() function below
   
   -- Window resizing (leader + r prefix)
   map("n", "<leader>rh", ":vertical resize -5<CR>", { desc = "Decrease window width" })
@@ -156,7 +148,6 @@ if not in_vscode then
   map("n", "<leader>rm", "<C-w>|<C-w>_", { desc = "Maximize current window" })
   map("n", "<leader>rr", "<C-w>=", { desc = "Restore equal window sizes" })
 
-  -- Terminal mode mappings are now handled by set_terminal_keymaps() function
 
   -- Git integration
   map("n", "<leader>gg", "<cmd>lua toggle_lazygit()<CR>", { desc = "Open lazygit" })
@@ -343,7 +334,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "K", vim.lsp.buf.hover, opts("Hover Documentation"))
     map("n", "<leader>k", vim.lsp.buf.hover, opts("Hover Documentation (alt)"))
     map("n", "<leader>K", vim.lsp.buf.signature_help, opts("Signature Help"))
-    -- Removed Insert mode <C-k> to avoid conflicts with Claude Code
     
     -- Code Actions and Refactoring
     map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts("Code Action"))

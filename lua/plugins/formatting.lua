@@ -25,17 +25,6 @@ return {
           formatting.stylua,
           formatting.shfmt,
 
-          -- Diagnostics
-          -- diagnostics.eslint_d,
-          -- diagnostics.flake8,
-          -- diagnostics.shellcheck,
-          -- diagnostics.luacheck.with({
-          --   extra_args = { "--globals", "vim", "--no-max-line-length" },
-          -- }),
-
-          -- Code Actions
-          -- code_actions.eslint_d,
-          -- code_actions.shellcheck,
           code_actions.gitsigns,
         },
         -- Format on save

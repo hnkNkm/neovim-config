@@ -6,7 +6,6 @@ return {
     dependencies = {
       -- Automatically install LSPs, formatters, linters
       "williamboman/mason.nvim",
-      -- "williamboman/mason-lspconfig.nvim", -- Temporarily disabled due to errors
 
       -- Useful status updates for LSP
       { "j-hui/fidget.nvim", opts = {} },
@@ -83,34 +82,6 @@ return {
         end
       end
       
-      --[[ Disabled mason-lspconfig handlers due to errors
-        -- Default handler: Setup server with capabilities
-        function(server_name)
-          -- Skip if server configuration doesn't exist
-          local ok, lspconfig = pcall(require, "lspconfig")
-          if ok and lspconfig[server_name] then
-            lspconfig[server_name].setup({
-              capabilities = capabilities,
-            })
-          end
-        end,
-        -- Custom handler for lua_ls
-        ["lua_ls"] = function()
-          require("lspconfig").lua_ls.setup({
-            capabilities = capabilities,
-            settings = {
-              Lua = {
-                runtime = { version = "LuaJIT" },
-                diagnostics = { globals = { "vim" } },
-                workspace = { library = vim.api.nvim_get_runtime_file("", true) },
-                telemetry = { enable = false },
-              },
-            },
-          })
-        end,
-         -- Add custom handlers for other servers if needed
-       })
-      --]]
 
       -- LSP Keymaps are now centralized in lua/config/keymaps.lua
       -- They are automatically attached via the LspAttach autocmd
