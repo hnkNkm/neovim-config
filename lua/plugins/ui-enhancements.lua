@@ -170,7 +170,7 @@ return {
   {
     "nvim-tree/nvim-web-devicons",
     enabled = not vim.g.vscode,
-    lazy = true,
+    lazy = false,  -- Load early since many plugins depend on it
     config = function()
       require("nvim-web-devicons").setup({
         -- Override default icons

@@ -20,9 +20,6 @@ return {
     enabled = not vim.g.vscode,
     dependencies = { "nvim-tree/nvim-web-devicons" }, -- Optional: for icons
     config = function()
-      -- Store nvim-tree root directory globally
-      vim.g.nvim_tree_root_dir = vim.fn.getcwd()
-      
       require("nvim-tree").setup({
         -- See nvim-tree documentation for more options
         sort_by = "case_sensitive",
@@ -41,18 +38,8 @@ return {
           -- Default mappings
           api.config.mappings.default_on_attach(bufnr)
           
-          -- Override Ctrl+] to track root changes
-          vim.keymap.set("n", "<C-]>", function()
-            api.tree.change_root_to_node()
-            -- Store the new root directory
-            vim.defer_fn(function()
-              local core = require("nvim-tree.core")
-              local cwd = core.get_cwd()
-              if cwd then
-                vim.g.nvim_tree_root_dir = cwd
-              end
-            end, 50)
-          end, { buffer = bufnr, desc = "Change root to node" })
+          -- Override Ctrl+] to change root
+          vim.keymap.set("n", "<C-]>", api.tree.change_root_to_node, { buffer = bufnr, desc = "Change root to node" })
           
           -- Add T key to open terminal in current directory
           vim.keymap.set("n", "T", function()
