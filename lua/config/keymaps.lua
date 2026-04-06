@@ -90,6 +90,10 @@ map("n", "<leader>br", ":e!<CR>", { desc = "Reload current buffer" })
 map("n", "<leader>bR", ":checktime<CR>", { desc = "Check all buffers for changes" })
 map("n", "<F5>", ":e!<CR>", { desc = "Reload buffer (F5)" })
 
+-- Close all buffers
+map("n", "<leader>ba", ":%bd<CR>", { desc = "Close all buffers" })
+map("n", "<leader>bo", ":%bd|e#|bd#<CR>", { desc = "Close other buffers (keep current)" })
+
 -- Clear search highlights
 map("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 map("n", "<Esc>", ":nohl<CR>", { desc = "Clear search highlights" })

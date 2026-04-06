@@ -4,31 +4,23 @@ return {
     "neovim/nvim-lspconfig",
     enabled = not vim.g.vscode,
     dependencies = {
-      -- Automatically install LSPs, formatters, linters
       { "williamboman/mason.nvim", opts = {} },
       {
         "mason-org/mason-lspconfig.nvim",
         opts = {
           ensure_installed = { "lua_ls", "pyright", "ts_ls" },
-          automatic_enable = true, -- Automatically enable installed servers
+          automatic_enable = false, -- We manually enable servers below
         },
       },
-
-      -- Useful status updates for LSP
       { "j-hui/fidget.nvim", opts = {} },
     },
     config = function()
-      -- Mason is already setup via opts in dependencies
-      -- Setup mason-lspconfig (will be configured via opts above)
-      -- This handles automatic installation and enabling of servers
-
-      -- Get the LSP capabilities provided by blink.cmp
+      -- Get capabilities from blink.cmp
       local capabilities = require("blink.cmp").get_lsp_capabilities()
-      
-      -- Configure servers via vim.lsp.config (Neovim 0.11+)
-      -- mason-lspconfig will automatically enable these when installed
-      
-      -- Configure lua_ls with custom settings
+
+      -- Configure servers using Neovim 0.11+ vim.lsp.config API
+      -- nvim-lspconfig provides base configs, we extend them here
+
       vim.lsp.config("lua_ls", {
         capabilities = capabilities,
         settings = {
@@ -41,7 +33,6 @@ return {
         },
       })
 
-      -- Configure zls with enhanced settings
       vim.lsp.config("zls", {
         capabilities = capabilities,
         settings = {
@@ -52,41 +43,33 @@ return {
             enable_build_on_save = false,
             enable_autofix = true,
             enable_inlay_hints = true,
-            inlay_hints_hide_redundant_param_names = true,
-            inlay_hints_hide_redundant_param_names_last_token = true,
           },
         },
       })
 
-      -- Configure all common servers with capabilities
-      -- These will be auto-installed when you open a file of that type
+      -- Configure other servers with just capabilities
       local servers = {
-        -- Web
-        "ts_ls", "html", "cssls", "jsonls", "eslint", "tailwindcss", "svelte", "astro",
-        -- Systems
-        "rust_analyzer", "gopls", "clangd",
-        -- Scripting
-        "pyright", "bashls", "lua_ls",
-        -- Config/Data
-        "yamlls", "taplo", "dockerls", "docker_compose_language_service",
-        -- Docs
-        "marksman",
-        -- Nix
-        "nil_ls",
-        -- Other
-        "cmake", "terraformls",
+        "pyright", "ts_ls", "gopls",
+        "html", "cssls", "jsonls", "yamlls",
+        "bashls", "marksman", "nil_ls",
       }
       for _, server in ipairs(servers) do
-        vim.lsp.config(server, {
-          capabilities = capabilities,
-        })
+        vim.lsp.config(server, { capabilities = capabilities })
       end
-      
 
-      -- LSP Keymaps are now centralized in lua/config/keymaps.lua
-      -- They are automatically attached via the LspAttach autocmd
-      
-      -- Enable completion triggered by <c-x><c-o>
+      -- Only enable rust_analyzer if rustc is available
+      if vim.fn.executable("rustc") == 1 then
+        vim.lsp.config("rust_analyzer", { capabilities = capabilities })
+        servers[#servers + 1] = "rust_analyzer"
+      end
+
+      -- Enable all configured servers
+      local enabled = { "lua_ls", "zls" }
+      for _, s in ipairs(servers) do
+        enabled[#enabled + 1] = s
+      end
+      vim.lsp.enable(enabled)
+
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
         callback = function(ev)
