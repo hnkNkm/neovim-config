@@ -18,13 +18,27 @@ return {
   {
     "stevearc/oil.nvim",
     enabled = not vim.g.vscode,
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      "refractalize/oil-git-status.nvim",
+    },
     opts = {
       default_file_explorer = true,
       columns = { "icon" },
       view_options = {
         show_hidden = false,
       },
+      win_options = {
+        signcolumn = "yes:2",
+      },
     },
+  },
+
+  -- Git status for oil.nvim
+  {
+    "refractalize/oil-git-status.nvim",
+    enabled = not vim.g.vscode,
+    dependencies = { "stevearc/oil.nvim" },
+    opts = {},
   },
 }
