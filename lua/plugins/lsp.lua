@@ -44,11 +44,12 @@ return {
       
       -- Configure other servers with just capabilities
       -- This includes both ensure_installed servers and any others that might be auto-installed
-      local servers = { 
+      local servers = {
         "pyright", "ts_ls", "html", "cssls", "jsonls",
         -- Additional servers that might be auto-installed
-        "rust_analyzer", "gopls", "clangd", "bashls", "dockerls", 
-        "yamlls", "taplo", "marksman", "eslint", "tailwindcss"
+        "rust_analyzer", "gopls", "clangd", "bashls", "dockerls",
+        "yamlls", "taplo", "marksman", "eslint", "tailwindcss",
+        "nil_ls",  -- Nix
       }
       for _, server in ipairs(servers) do
         vim.lsp.config(server, {
