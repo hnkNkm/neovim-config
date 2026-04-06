@@ -29,7 +29,7 @@ A modern Neovim configuration that works seamlessly in both standalone Neovim an
 
 - **tokyonight.nvim**: Modern colorscheme with transparency support
 - **lualine.nvim**: Enhanced status line
-- **nvim-tree.lua**: File explorer with Git integration
+- **oil.nvim**: File explorer (edit filesystem like a buffer)
 - **nvim-lspconfig**: LSP configuration (Neovim 0.11+ compatible)
 - **mason.nvim**: LSP server management
 - **nvim-cmp**: Completion engine
@@ -118,7 +118,7 @@ lua/
 │   ├── keymaps.lua    # Centralized key mappings
 │   └── filetypes.lua  # Filetype-specific settings
 └── plugins/
-    ├── ui.lua         # UI plugins (lualine, nvim-tree)
+    ├── ui.lua         # UI plugins (lualine, oil.nvim)
     ├── editor.lua     # Editor enhancements
     ├── lsp.lua        # LSP configuration
     ├── formatting.lua # Formatters and linters

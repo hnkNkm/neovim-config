@@ -182,11 +182,10 @@ if not in_vscode then
   map("n", "<leader>ld", "<cmd>Telescope diagnostics bufnr=0<CR>", { desc = "Document diagnostics" })
   map("n", "<leader>lD", "<cmd>Telescope diagnostics<CR>", { desc = "Workspace diagnostics" })
   
-  -- nvim-tree (File Explorer)
-  map("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
-  map("n", "<C-n>", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer (alt)" })
-  map("n", "<C-t>", ":NvimTreeFocus<CR>", { desc = "Focus file tree" })
-  map("n", "<C-f>", ":NvimTreeFindFile<CR>", { desc = "Find current file in tree" })
+  -- Oil (File Explorer - edit filesystem like a buffer)
+  map("n", "<leader>e", "<cmd>Oil<CR>", { desc = "Open file explorer" })
+  map("n", "-", "<cmd>Oil<CR>", { desc = "Open parent directory" })
+  map("n", "<leader>ef", "<cmd>Oil --float<CR>", { desc = "Open file explorer (float)" })
   
   -- ToggleTerm (Terminal) - Smart toggle that closes other terminals when needed
   map("n", "<leader>tt", "<cmd>lua smart_toggle_term_default()<CR>", { desc = "Toggle terminal (floating)" })

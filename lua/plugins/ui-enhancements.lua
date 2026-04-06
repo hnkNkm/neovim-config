@@ -62,14 +62,7 @@ return {
             local icon = level:match("error") and " " or " "
             return " " .. icon .. count
           end,
-          offsets = {
-            {
-              filetype = "NvimTree",
-              text = "File Explorer",
-              text_align = "center",
-              separator = true,
-            },
-          },
+          offsets = {},  -- oil.nvim uses buffers, not sidebar
           color_icons = true, -- whether or not to add the filetype icon highlights
           show_buffer_icons = true, -- disable filetype icons for buffers
           show_buffer_close_icons = true,
