@@ -32,16 +32,15 @@ A modern Neovim configuration that works seamlessly in both standalone Neovim an
 - **oil.nvim**: File explorer (edit filesystem like a buffer)
 - **nvim-lspconfig**: LSP configuration (Neovim 0.11+ compatible)
 - **mason.nvim**: LSP server management
-- **nvim-cmp**: Completion engine
-- **none-ls.nvim**: Formatting and linting
+- **blink.cmp**: Fast completion engine
+- **conform.nvim**: Formatting
+- **nvim-lint**: Linting
 - **toggleterm.nvim**: Terminal management with REPL support
 - **persistence.nvim**: Session management
 - **telescope.nvim**: Fuzzy finder
 - **bufferline.nvim**: Buffer management
 - **nvim-notify**: Notification system
 - **gitsigns.nvim**: Git integration in buffers
-- **vim-skk/skkeleton**: Japanese input method
-- **vim-denops/denops.vim**: Deno plugin framework for SKKeleton
 - **claudecode.nvim**: Claude AI assistant integration
 
 ## Installation

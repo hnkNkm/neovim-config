@@ -22,9 +22,9 @@ return {
       -- Mason is already setup via opts in dependencies
       -- Setup mason-lspconfig (will be configured via opts above)
       -- This handles automatic installation and enabling of servers
-      
-      -- Get the LSP capabilities provided by nvim-cmp
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      -- Get the LSP capabilities provided by blink.cmp
+      local capabilities = require("blink.cmp").get_lsp_capabilities()
       
       -- Configure servers via vim.lsp.config (Neovim 0.11+)
       -- mason-lspconfig will automatically enable these when installed
