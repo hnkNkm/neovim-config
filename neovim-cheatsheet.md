@@ -94,7 +94,15 @@
 - `gco` - 下の行にコメント追加
 - `gcO` - 上の行にコメント追加
 
----
+### Flash（高速移動）
+- `s` - Flash ジャンプ（画面内の任意の場所へ）
+- `S` - Flash Treesitter（構文単位で選択）
+- `r` - Remote Flash（オペレータ待機モード）
+- `R` - Treesitter Search
+
+### Which-key
+- `<leader>` を押して待つ - 利用可能なキーマップを表示
+- `<leader>?` - バッファローカルキーマップを表示
 
 ---
 

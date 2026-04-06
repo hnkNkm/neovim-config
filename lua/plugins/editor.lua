@@ -150,4 +150,48 @@ return {
       -- Keymaps are now centralized in lua/config/keymaps.lua
     end,
   },
+
+  -- Which-key (show keybindings in popup)
+  {
+    "folke/which-key.nvim",
+    enabled = not vim.g.vscode,
+    event = "VeryLazy",
+    opts = {
+      preset = "modern",
+      delay = 300,
+    },
+    keys = {
+      {
+        "<leader>?",
+        function()
+          require("which-key").show({ global = false })
+        end,
+        desc = "Buffer Local Keymaps (which-key)",
+      },
+    },
+  },
+
+  -- Flash (fast navigation)
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+    },
+  },
+
+  -- Markview (markdown preview in buffer)
+  {
+    "OXY2DEV/markview.nvim",
+    enabled = not vim.g.vscode,
+    lazy = false,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+  },
 }
