@@ -9,8 +9,7 @@ return {
       {
         "mason-org/mason-lspconfig.nvim",
         opts = {
-          ensure_installed = { "lua_ls", "pyright", "ts_ls", "html", "cssls", "jsonls" },
-          automatic_installation = true, -- Automatically install missing servers
+          ensure_installed = { "lua_ls", "pyright", "ts_ls" },
           automatic_enable = true, -- Automatically enable installed servers
         },
       },
@@ -42,14 +41,23 @@ return {
         },
       })
       
-      -- Configure other servers with just capabilities
-      -- This includes both ensure_installed servers and any others that might be auto-installed
+      -- Configure all common servers with capabilities
+      -- These will be auto-installed when you open a file of that type
       local servers = {
-        "pyright", "ts_ls", "html", "cssls", "jsonls",
-        -- Additional servers that might be auto-installed
-        "rust_analyzer", "gopls", "clangd", "bashls", "dockerls",
-        "yamlls", "taplo", "marksman", "eslint", "tailwindcss",
-        "nil_ls",  -- Nix
+        -- Web
+        "ts_ls", "html", "cssls", "jsonls", "eslint", "tailwindcss", "svelte", "astro",
+        -- Systems
+        "rust_analyzer", "gopls", "clangd", "zls",
+        -- Scripting
+        "pyright", "bashls", "lua_ls",
+        -- Config/Data
+        "yamlls", "taplo", "dockerls", "docker_compose_language_service",
+        -- Docs
+        "marksman",
+        -- Nix
+        "nil_ls",
+        -- Other
+        "cmake", "terraformls",
       }
       for _, server in ipairs(servers) do
         vim.lsp.config(server, {
