@@ -40,14 +40,31 @@ return {
           },
         },
       })
-      
+
+      -- Configure zls with enhanced settings
+      vim.lsp.config("zls", {
+        capabilities = capabilities,
+        settings = {
+          zls = {
+            enable_snippets = true,
+            enable_argument_placeholders = true,
+            enable_ast_check_diagnostics = true,
+            enable_build_on_save = false,
+            enable_autofix = true,
+            enable_inlay_hints = true,
+            inlay_hints_hide_redundant_param_names = true,
+            inlay_hints_hide_redundant_param_names_last_token = true,
+          },
+        },
+      })
+
       -- Configure all common servers with capabilities
       -- These will be auto-installed when you open a file of that type
       local servers = {
         -- Web
         "ts_ls", "html", "cssls", "jsonls", "eslint", "tailwindcss", "svelte", "astro",
         -- Systems
-        "rust_analyzer", "gopls", "clangd", "zls",
+        "rust_analyzer", "gopls", "clangd",
         -- Scripting
         "pyright", "bashls", "lua_ls",
         -- Config/Data
