@@ -400,6 +400,21 @@ function _G.set_terminal_keymaps()
     end
   end, { buffer = 0, desc = "Interrupt Claude Code (Ctrl+Q)" })
   
+  -- Shift+Enter and Option+Enter for newline (multi-line input)
+  vim.keymap.set('t', '<S-CR>', function()
+    local chan = vim.b.terminal_job_id
+    if chan then
+      vim.fn.chansend(chan, '\n')
+    end
+  end, { buffer = 0, desc = "Insert newline (Shift+Enter)" })
+
+  vim.keymap.set('t', '<M-CR>', function()
+    local chan = vim.b.terminal_job_id
+    if chan then
+      vim.fn.chansend(chan, '\n')
+    end
+  end, { buffer = 0, desc = "Insert newline (Option+Enter)" })
+
   -- Only set navigation keymaps if not in Claude Code terminal
   -- This prevents conflicts with Claude's input handling
   if not is_claude then
