@@ -184,14 +184,4 @@ return {
     },
   },
 
-  -- Markview (markdown preview in buffer)
-  {
-    "OXY2DEV/markview.nvim",
-    enabled = not vim.g.vscode,
-    lazy = false,
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons",
-    },
-  },
 }
