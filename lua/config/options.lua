@@ -36,16 +36,54 @@ vim.api.nvim_create_autocmd({"FocusGained", "BufEnter"}, {
   end,
 })
 
--- Notification when file changes (only for actual file changes)
+-- Notification when file changes and refresh LSP
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
   pattern = "*",
   callback = function()
-    -- Only notify for actual files, not special buffers
+    -- Only for actual files, not special buffers
     if vim.bo.buftype == "" then
       vim.notify("File reloaded from disk", vim.log.levels.INFO)
+      -- Force LSP to re-sync by editing nothing (triggers didChange)
+      vim.schedule(function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local clients = vim.lsp.get_clients({ bufnr = bufnr })
+        if #clients > 0 then
+          -- Notify LSP of buffer change
+          for _, client in ipairs(clients) do
+            local params = {
+              textDocument = {
+                uri = vim.uri_from_bufnr(bufnr),
+                version = vim.lsp.util.buf_versions[bufnr] or 0,
+              },
+              contentChanges = {
+                { text = table.concat(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false), "\n") }
+              },
+            }
+            client:notify("textDocument/didChange", params)
+          end
+        end
+      end)
     end
   end,
 })
+
+-- More aggressive checktime for external tools (Claude Code, etc.)
+vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+  pattern = "*",
+  callback = function()
+    if vim.bo.buftype == "" and vim.fn.mode() ~= "c" then
+      vim.cmd("checktime")
+    end
+  end,
+})
+
+-- Backwards compatible LSP commands for Neovim 0.12+
+vim.api.nvim_create_user_command("LspRestart", "lsp restart", { desc = "Restart LSP" })
+vim.api.nvim_create_user_command("LspStop", "lsp stop", { desc = "Stop LSP" })
+vim.api.nvim_create_user_command("LspStart", "lsp enable", { desc = "Start LSP" })
+vim.api.nvim_create_user_command("LspInfo", function()
+  vim.cmd("checkhealth vim.lsp")
+end, { desc = "LSP Info" })
 
 -- Help window settings
 opt.helpheight = 12 -- Minimum height of help window

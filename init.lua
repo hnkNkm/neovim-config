@@ -43,6 +43,7 @@ require("lazy").setup({
 require("config.options")
 require("config.keymaps")
 require("config.filetypes")
+require("config.lsp")
 
 -- Set colorscheme (only in regular Neovim, not in VSCode)
 if not vim.g.vscode then
