@@ -366,7 +366,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- In VSCode, let VSCode handle hover
 if not in_vscode then
   map("n", "K", function()
-    local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+    local clients = vim.lsp.get_clients({ bufnr = 0 })
     if #clients == 0 then
       local word = vim.fn.expand("<cword>")
       if word ~= "" then
