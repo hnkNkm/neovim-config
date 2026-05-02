@@ -33,6 +33,8 @@ local server_cmds = {
   jsonls = "vscode-json-language-server",
   rust_analyzer = "rust-analyzer",
   denols = "deno", -- Deno LSP
+  elixirls = "elixir-ls",
+  c3_lsp = "c3lsp",
 }
 
 -- Only enable servers that are available in PATH
