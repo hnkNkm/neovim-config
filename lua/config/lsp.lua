@@ -34,7 +34,7 @@ local server_cmds = {
   rust_analyzer = "rust-analyzer",
   denols = "deno", -- Deno LSP
   elixirls = "elixir-ls",
-  c3_lsp = "c3lsp",
+  c3_lsp = "c3-lsp",
 }
 
 -- Only enable servers that are available in PATH
