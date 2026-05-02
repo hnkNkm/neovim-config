@@ -96,9 +96,9 @@
 
 ### Flash（高速移動）
 - `s` - Flash ジャンプ（画面内の任意の場所へ）
-- `S` - Flash Treesitter（構文単位で選択）
+- `S` - Flash Treesitter（構文単位で選択・Treesitterパーサがあるバッファのみ動作）
 - `r` - Remote Flash（オペレータ待機モード）
-- `R` - Treesitter Search
+- `R` - Treesitter Search（Treesitterパーサがあるバッファのみ動作）
 
 ### Which-key
 - `<leader>` を押して待つ - 利用可能なキーマップを表示
@@ -248,11 +248,14 @@ LSPがアタッチされている時：
 - `:Lazy log` - プラグイン更新ログを表示
 - `:Lazy profile` - プラグインの読み込み時間を計測
 
-### Mason（LSP/フォーマッター/リンターマネージャー）
-- `:Mason` - Mason UIを開く
-- `:MasonInstall <package>` - パッケージをインストール
-- `:MasonUninstall <package>` - パッケージをアンインストール
-- `:MasonUpdate` - 全パッケージを更新
+### LSP管理（Nix + direnv）
+LSPサーバーはNix（プロジェクトの`flake.nix` + direnv、またはhome-manager）で提供される。
+- `:checkhealth vim.lsp` - LSPの状態を確認
+- `:LspInfo` - アタッチされているLSPクライアントを表示
+- `:LspLog` - LSPログを表示
+- `<leader>da` - direnv許可（現ディレクトリ）
+- `<leader>dd` - direnv拒否
+- `<leader>dr` - direnv再読み込み
 
 ### oil.nvim（ファイルエクスプローラー）
 Oilバッファ内で：

@@ -7,9 +7,9 @@ A modern Neovim configuration that works seamlessly in both standalone Neovim an
 - **Plugin Management**: Uses [lazy.nvim](https://github.com/folke/lazy.nvim) for efficient plugin management
 - **VSCode Compatibility**: Automatically detects and adapts when running inside VSCode
 - **Modern UI**: Beautiful interface with Tokyo Night theme, status line, and file explorer (in standalone mode)
-- **LSP Support**: Neovim 0.11+ compatible with new `vim.lsp.config` API (in standalone mode)
-- **Autocompletion**: Smart code completion with nvim-cmp (in standalone mode)
-- **Syntax Highlighting**: Enhanced syntax highlighting with Treesitter
+- **LSP Support**: Neovim 0.12 native LSP via `vim.lsp.config` / `vim.lsp.enable` and `lsp/*.lua` (in standalone mode). LSP servers are provided by Nix (project `flake.nix` + direnv, or home-manager)
+- **Autocompletion**: Smart code completion with blink.cmp (in standalone mode)
+- **Syntax Highlighting**: Built-in Vim syntax highlighting
 - **Terminal Integration**: ToggleTerm with floating terminal and REPL support (in standalone mode)
 - **File Navigation**: Fuzzy finding with Telescope (limited functionality in VSCode)
 - **Git Integration**: Lazygit and Gitsigns for comprehensive Git support (in standalone mode)
@@ -30,8 +30,8 @@ A modern Neovim configuration that works seamlessly in both standalone Neovim an
 - **tokyonight.nvim**: Modern colorscheme with transparency support
 - **lualine.nvim**: Enhanced status line
 - **oil.nvim**: File explorer (edit filesystem like a buffer)
-- **nvim-lspconfig**: LSP configuration (Neovim 0.11+ compatible)
-- **mason.nvim**: LSP server management
+- **direnv.nvim**: Per-project environment loading (powers LSP server discovery via Nix flakes)
+- **fidget.nvim**: LSP progress indicator
 - **blink.cmp**: Fast completion engine
 - **conform.nvim**: Formatting
 - **nvim-lint**: Linting
@@ -47,9 +47,9 @@ A modern Neovim configuration that works seamlessly in both standalone Neovim an
 
 ### Prerequisites
 
-- Neovim 0.11.3 or later (0.11.4+ recommended)
+- Neovim 0.12 or later
 - Git
-- (Optional) Node.js for LSP features
+- Nix (for LSP servers; project-local via `flake.nix` + direnv, or global via home-manager)
 - (Optional) Ripgrep for Telescope search
 - (Optional) Deno for SKKeleton (Japanese input)
 - (Optional) SKK dictionaries for Japanese input
