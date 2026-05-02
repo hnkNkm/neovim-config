@@ -36,33 +36,12 @@ vim.api.nvim_create_autocmd({"FocusGained", "BufEnter"}, {
   end,
 })
 
--- Notification when file changes and refresh LSP
+-- Notification when file changes (LSP sync is handled by Neovim 0.12 automatically)
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
   pattern = "*",
   callback = function()
-    -- Only for actual files, not special buffers
     if vim.bo.buftype == "" then
       vim.notify("File reloaded from disk", vim.log.levels.INFO)
-      -- Force LSP to re-sync by editing nothing (triggers didChange)
-      vim.schedule(function()
-        local bufnr = vim.api.nvim_get_current_buf()
-        local clients = vim.lsp.get_clients({ bufnr = bufnr })
-        if #clients > 0 then
-          -- Notify LSP of buffer change
-          for _, client in ipairs(clients) do
-            local params = {
-              textDocument = {
-                uri = vim.uri_from_bufnr(bufnr),
-                version = vim.lsp.util.buf_versions[bufnr] or 0,
-              },
-              contentChanges = {
-                { text = table.concat(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false), "\n") }
-              },
-            }
-            client:notify("textDocument/didChange", params)
-          end
-        end
-      end)
     end
   end,
 })

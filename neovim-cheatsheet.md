@@ -96,9 +96,7 @@
 
 ### Flash（高速移動）
 - `s` - Flash ジャンプ（画面内の任意の場所へ）
-- `S` - Flash Treesitter（構文単位で選択・Treesitterパーサがあるバッファのみ動作）
 - `r` - Remote Flash（オペレータ待機モード）
-- `R` - Treesitter Search（Treesitterパーサがあるバッファのみ動作）
 
 ### Which-key
 - `<leader>` を押して待つ - 利用可能なキーマップを表示

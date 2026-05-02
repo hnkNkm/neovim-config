@@ -53,13 +53,7 @@ return {
     config = function()
       local autopairs = require("nvim-autopairs")
       autopairs.setup({
-        check_ts = true, -- treesitter integration
         disable_filetype = { "TelescopePrompt", "vim" },
-        ts_config = {
-          lua = { "string", "source" },
-          javascript = { "string", "template_string" },
-          java = false,
-        },
         fast_wrap = {
           map = "<M-e>", -- Alt+e to wrap with brackets
           chars = { "{", "[", "(", '"', "'" },
@@ -117,7 +111,7 @@ return {
           keyword = "wide", -- "fg", "bg", "wide", "wide_bg", "wide_fg" or empty. (wide and wide_bg is the same as bg, but will also highlight surrounding characters, wide_fg acts accordingly but with fg)
           after = "fg", -- "fg" or "bg" or empty
           pattern = [[.*<(KEYWORDS)\s*:]], -- pattern or table of patterns, used for highlighting (vim regex)
-          comments_only = true, -- uses treesitter to match keywords in comments only
+          comments_only = false, -- treesitter parser not installed; match by regex
           max_line_len = 400, -- ignore lines longer than this
           exclude = {}, -- list of file types to exclude highlighting
         },
@@ -178,9 +172,7 @@ return {
     opts = {},
     keys = {
       { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
       { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
     },
   },
 
